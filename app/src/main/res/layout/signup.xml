@@ -131,6 +131,29 @@
                 android:layout_marginTop="4dp"
                 android:drawableLeft="@drawable/ic_lock_white_24dp"
                 />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#f9d7db"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/confirmPassword"
+                android:drawablePadding="12dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:textColorHint="#ffffff"
+                android:hint="Confirm password"
+                android:maxLines="1"
+                android:background="@android:color/transparent"
+                android:layout_marginTop="4dp"
+                android:drawableLeft="@drawable/ic_lock_white_24dp"
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -154,6 +177,7 @@
                 android:textSize="18sp"
                 android:padding="16dp"
                 android:clickable="true"
+                android:id="@+id/signUpClick"
                 android:layout_marginTop="16dp"/>
 
             <Button
