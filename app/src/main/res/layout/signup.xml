@@ -8,7 +8,7 @@
     android:paddingLeft="18dp"
     android:paddingRight="18dp"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/new_login_gradients"
+    android:background="@drawable/background"
     android:id="@+id/signUpLayout">
 
     <ScrollView
@@ -36,22 +36,22 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:ems="10"
+                android:textColor="#000000"
                 android:id="@+id/signUpFirstName"
                 android:background="@android:color/transparent"
                 android:drawablePadding="12dp"
                 android:padding="8dp"
                 android:hint="First Name"
-                android:textColorHint="#ffffff"
+                android:textColorHint="#000000"
                 android:maxLines="1"
-                android:drawableLeft="@drawable/ic_person_white_24dp"
-                android:layout_marginTop="70dp"
+                android:drawableLeft="@drawable/ic_guest_24dp"
                 />
 
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#f9d7db"
+                android:background="#000000"
                 />
             <EditText
                 android:layout_width="match_parent"
@@ -59,20 +59,21 @@
                 android:inputType="textEmailAddress"
                 android:ems="10"
                 android:id="@+id/signUpLastName"
+                android:textColor="#000000"
                 android:background="@android:color/transparent"
                 android:drawablePadding="12dp"
                 android:padding="8dp"
                 android:hint="Last Name"
-                android:textColorHint="#ffffff"
+                android:textColorHint="#000000"
                 android:maxLines="1"
-                android:drawableLeft="@drawable/ic_person_white_24dp"
+                android:drawableLeft="@drawable/ic_guest_24dp"
                 />
 
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#f9d7db"
+                android:background="#000000"
                 />
             <EditText
                 android:layout_width="match_parent"
@@ -80,18 +81,19 @@
                 android:inputType="textEmailAddress"
                 android:ems="10"
                 android:id="@+id/signUpUsername"
+                android:textColor="#000000"
                 android:background="@android:color/transparent"
                 android:drawablePadding="12dp"
                 android:padding="8dp"
                 android:hint="Username"
-                android:textColorHint="#ffffff"
+                android:textColorHint="#000000"
                 android:maxLines="1"
-                android:drawableLeft="@drawable/ic_person_white_24dp"
+                android:drawableLeft="@drawable/ic_guest_24dp"
                 />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#f9d7db"
+                android:background="#000000"
                 />
             <EditText
                 android:layout_width="match_parent"
@@ -99,24 +101,26 @@
                 android:inputType="textEmailAddress"
                 android:ems="10"
                 android:id="@+id/signUpEmail"
+                android:textColor="#000000"
                 android:background="@android:color/transparent"
                 android:drawablePadding="12dp"
                 android:padding="8dp"
                 android:hint="Email"
-                android:textColorHint="#ffffff"
+                android:textColorHint="#000000"
                 android:maxLines="1"
-                android:drawableLeft="@drawable/ic_person_white_24dp"
+                android:drawableLeft="@drawable/ic_mail_24dp"
                 />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#f9d7db"
+                android:background="#000000"
                 />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:textColor="#000000"
                 android:ems="10"
                 android:id="@+id/signUpPassword"
                 android:drawablePadding="12dp"
@@ -124,41 +128,42 @@
                 android:paddingRight="8dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:textColorHint="#ffffff"
+                android:textColorHint="#000000"
                 android:hint="Password"
                 android:maxLines="1"
                 android:background="@android:color/transparent"
                 android:layout_marginTop="4dp"
-                android:drawableLeft="@drawable/ic_lock_white_24dp"
+                android:drawableLeft="@drawable/ic_manual_24dp"
                 />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#f9d7db"
+                android:background="#000000"
                 />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:ems="10"
+                android:textColor="#000000"
                 android:id="@+id/confirmPassword"
                 android:drawablePadding="12dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:textColorHint="#ffffff"
+                android:textColorHint="#000000"
                 android:hint="Confirm password"
                 android:maxLines="1"
                 android:background="@android:color/transparent"
                 android:layout_marginTop="4dp"
-                android:drawableLeft="@drawable/ic_lock_white_24dp"
+                android:drawableLeft="@drawable/ic_manual_24dp"
                 />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#f9d7db"
+                android:background="#000000"
                 />
 
 
@@ -170,10 +175,9 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_signup"
                 android:text="Sign Up"
-                android:textColor="#fff"
+                android:textColor="#000000"
                 android:textAllCaps="false"
                 android:textStyle="normal"
-                style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:textSize="18sp"
                 android:padding="16dp"
                 android:clickable="true"
@@ -185,8 +189,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Already signed up?"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="#fff"
+                android:textColor="#000000"
                 android:background="@null"
                 android:padding="16dp"
                 android:clickable="true"

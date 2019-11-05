@@ -38,7 +38,7 @@ public class SignUp extends AppCompatActivity {
     private String firstName;
     private String lastName;
     private String email;
-    private String register_url = "http://192.168.1.148/carpool/register.php";
+    private String register_url = "http://136.32.51.159/carpool/register.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,6 @@ public class SignUp extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(SignUp.this, Login.class);
                 startActivity(i);
-                finish();
             }
         });
 

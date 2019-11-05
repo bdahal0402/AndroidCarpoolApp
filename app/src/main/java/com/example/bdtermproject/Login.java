@@ -30,7 +30,7 @@ public class Login extends AppCompatActivity {
     private String username;
     private String password;
     private ProgressDialog pDialog;
-    private String login_url = "http://192.168.1.148/carpool/login.php";
+    private String login_url = "http://136.32.51.159/carpool/login.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,6 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(Login.this, SignUp.class);
                 startActivity(i);
-                finish();
             }
         });
 

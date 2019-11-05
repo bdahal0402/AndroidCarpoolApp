@@ -6,10 +6,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-/**
- * Created by Abhi on 20 Jan 2018 020.
- */
-
 public class RequestCall {
     private static RequestCall mInstance;
     private RequestQueue mRequestQueue;
