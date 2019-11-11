@@ -191,7 +191,7 @@ public class UserSettings extends Activity {
                         try {
                             if (response.getInt("status") == 0) {
 
-                                        userRideOption = response.getString("rideOption");
+                                userRideOption = response.getString("rideOption");
                                 userActivityStatus = response.getString("activityStatus");
                                 userStartAddress = response.getString("startAddress");
                                 userDestination = response.getString("destination");

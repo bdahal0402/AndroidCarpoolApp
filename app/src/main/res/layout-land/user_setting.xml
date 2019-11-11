@@ -127,7 +127,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_login_two"
-        android:text="Cancel"
+        android:text="Home Page"
         android:textColor="#000000"
         android:textAllCaps="false"
         android:textStyle="normal"

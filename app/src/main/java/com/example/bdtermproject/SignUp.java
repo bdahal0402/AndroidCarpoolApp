@@ -27,6 +27,8 @@ public class SignUp extends AppCompatActivity {
     private static final String KEY_USERNAME = "Username";
     private static final String KEY_PASSWORD = "Password";
     private static final String KEY_EMAIL = "Email";
+    private static final String KEY_ADDRESS = "Address";
+    private static final String KEY_DESTINATION = "Destination";
     private static final String KEY_EMPTY = "";
     private EditText editUsername;
     private EditText editPassword;
@@ -34,12 +36,17 @@ public class SignUp extends AppCompatActivity {
     private EditText editEmail;
     private EditText editFirstName;
     private EditText editLastName;
+    private EditText editAddress;
+    private EditText editDestination;
     private String username;
     private String password;
     private String confirmPassword;
     private String firstName;
     private String lastName;
     private String email;
+    private String signUpAddress;
+    private String signUpDestination;
+
     private String register_url = "http://136.32.51.159/carpool/register.php";
 
     @Override
@@ -53,7 +60,8 @@ public class SignUp extends AppCompatActivity {
         editEmail = findViewById(R.id.signUpEmail);
         editFirstName = findViewById(R.id.signUpFirstName);
         editLastName = findViewById(R.id.signUpLastName);
-
+        editAddress = findViewById(R.id.signUpAddress);
+        editDestination = findViewById(R.id.signUpDestination);
 
         Button login = findViewById(R.id.backToLogin);
         Button register = findViewById(R.id.signUpClick);
@@ -76,6 +84,8 @@ public class SignUp extends AppCompatActivity {
                 confirmPassword = editConfirmPassword.getText().toString().trim();
                 firstName = editFirstName.getText().toString().trim();
                 lastName = editLastName.getText().toString().trim();
+                signUpAddress = editAddress.getText().toString().trim();
+                signUpDestination = editDestination.getText().toString().trim();
                 if (validateInputs()) {
                     registerUser();
                 }
@@ -96,7 +106,8 @@ public class SignUp extends AppCompatActivity {
 
     private void loadDashboard() {
         Login.loggedInUser = username;
-        Intent i = new Intent(getApplicationContext(), UserSettings.class);
+        UserSettings.getUserDetails(Login.loggedInUser, this);
+        Intent i = new Intent(getApplicationContext(), HomePage.class);
         startActivity(i);
         finish();
 
@@ -110,6 +121,8 @@ public class SignUp extends AppCompatActivity {
             request.put(KEY_PASSWORD, password);
             request.put(KEY_FULL_NAME, firstName + " " + lastName);
             request.put(KEY_EMAIL, email);
+            request.put(KEY_ADDRESS, signUpAddress);
+            request.put(KEY_DESTINATION, signUpDestination);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -168,6 +181,17 @@ public class SignUp extends AppCompatActivity {
         if (KEY_EMPTY.equals(password)) {
             editPassword.setError("Please fill out the password.");
             editPassword.requestFocus();
+            return false;
+        }
+
+        if (KEY_EMPTY.equals(signUpAddress)){
+            editAddress.setError("Please fill out your address.");
+            editAddress.requestFocus();
+            return false;
+        }
+        if (KEY_EMPTY.equals(signUpDestination)){
+            editDestination.setError("Please fill out your destination.");
+            editDestination.requestFocus();
             return false;
         }
 
