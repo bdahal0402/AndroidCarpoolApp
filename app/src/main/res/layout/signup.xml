@@ -20,7 +20,6 @@
             android:orientation="vertical">
 
 
-            <!-- Here you can replace it with your logo or brand name -->
             <ImageView
                 android:layout_width="240dp"
                 android:layout_height="120dp"

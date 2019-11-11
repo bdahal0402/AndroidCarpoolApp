@@ -61,6 +61,7 @@ public class SignUp extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(SignUp.this, Login.class);
                 startActivity(i);
+                finish();
             }
         });
 
@@ -79,6 +80,15 @@ public class SignUp extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        startActivity(new Intent(SignUp.this, Login.class));
+        finish();
 
     }
 

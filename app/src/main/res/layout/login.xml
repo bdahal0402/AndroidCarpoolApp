@@ -81,15 +81,6 @@
                 />
 
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text=" Remember me"
-                android:textColor="#000000"
-                android:padding="8dp"
-                />
-
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,15 +111,7 @@
                 android:clickable="true"
                 android:layout_marginTop="16dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Forget your Password?"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="#000000"
-                android:padding="16dp"
-                android:clickable="true"
-                android:layout_marginBottom="16dp"/>
+
 
 
 
