@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Click to change:"
-        android:textColor="@color/blue_grey_primary"
+        android:textColor="@color/red_primary"
         android:layout_marginTop="25dp"
         android:layout_gravity="center"
 
@@ -16,12 +16,11 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#000000"
-
+        android:background="@color/red_primary"
         />
 
     <Button
-        android:id="@+id/toggleStatusLand"
+        android:id="@+id/activityStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#000000"
@@ -32,18 +31,17 @@
         android:paddingBottom="8dp"
         android:text="Activity Status: Offline"
         android:maxLines="1"
-        android:background="@color/gray"></Button>
+        android:background="@color/transparent"></Button>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#000000"
-
+        android:background="@color/red_primary"
         />
 
 
     <Button
-        android:id="@+id/toggleRideOptionLand"
+        android:id="@+id/rideOption"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,19 +53,23 @@
         android:paddingBottom="8dp"
         android:text="Ride Option: Looking"
         android:maxLines="1"
-        android:background="@drawable/bkgrd_redlogin1"/>
+        android:background="@color/transparent"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#000000"
-        android:layout_marginTop="15dp"
+        android:background="@color/red_primary"
         />
-
+    <View
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000"
+        />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:id="@+id/startAddressLand"
+        android:id="@+id/startAddress"
         android:drawablePadding="12dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
@@ -90,7 +92,7 @@
         android:layout_height="wrap_content"
         android:textColor="#000000"
         android:gravity="center"
-        android:id="@+id/destinationLand"
+        android:id="@+id/destination"
         android:drawablePadding="12dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"

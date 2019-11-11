@@ -21,6 +21,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Login extends AppCompatActivity {
+
+    public static String loggedInUser;
+
     private static final String KEY_STATUS = "status";
     private static final String KEY_MESSAGE = "message";
     private static final String KEY_FULL_NAME = "FullName";
@@ -69,6 +72,8 @@ public class Login extends AppCompatActivity {
 
 
     private void loadDashboard() {
+        loggedInUser = username;
+        UserSettings.getUserDetails(Login.loggedInUser, this);
         Intent i = new Intent(getApplicationContext(), HomePage.class);
         startActivity(i);
         finish();
@@ -130,12 +135,12 @@ public class Login extends AppCompatActivity {
 
     private boolean validateInputs() {
         if(KEY_EMPTY.equals(username)){
-            editUsername.setError("Username cannot be empty");
+            editUsername.setError("Please fill out the username!");
             editPassword.requestFocus();
             return false;
         }
         if(KEY_EMPTY.equals(password)){
-            editPassword.setError("Password cannot be empty");
+            editPassword.setError("Please fill out the password!");
             editPassword.requestFocus();
             return false;
         }

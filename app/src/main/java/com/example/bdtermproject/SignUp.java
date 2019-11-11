@@ -19,6 +19,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SignUp extends AppCompatActivity {
+
+
     private static final String KEY_STATUS = "status";
     private static final String KEY_MESSAGE = "message";
     private static final String KEY_FULL_NAME = "FullName";
@@ -93,7 +95,8 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void loadDashboard() {
-        Intent i = new Intent(getApplicationContext(), HomePage.class);
+        Login.loggedInUser = username;
+        Intent i = new Intent(getApplicationContext(), UserSettings.class);
         startActivity(i);
         finish();
 
@@ -148,39 +151,39 @@ public class SignUp extends AppCompatActivity {
 
     private boolean validateInputs() {
         if (KEY_EMPTY.equals(firstName)) {
-            editFirstName.setError("Full Name cannot be empty");
+            editFirstName.setError("Please fill out the first name.");
             editFirstName.requestFocus();
             return false;
         }
         if (KEY_EMPTY.equals(lastName)) {
-            editLastName.setError("Last Name cannot be empty");
+            editLastName.setError("Please fill out the last name.");
             editLastName.requestFocus();
             return false;
         }
         if (KEY_EMPTY.equals(username)) {
-            editUsername.setError("Username cannot be empty");
+            editUsername.setError("Please fill out the username.");
             editUsername.requestFocus();
             return false;
         }
         if (KEY_EMPTY.equals(password)) {
-            editPassword.setError("Password cannot be empty");
+            editPassword.setError("Please fill out the password.");
             editPassword.requestFocus();
             return false;
         }
 
         if (KEY_EMPTY.equals(email)){
-            editEmail.setError("Email cannot be empty");
+            editEmail.setError("Please fill out the email.");
             editEmail.requestFocus();
             return false;
         }
 
         if (KEY_EMPTY.equals(confirmPassword)) {
-            editConfirmPassword.setError("Confirm Password cannot be empty");
+            editConfirmPassword.setError("Please confirm your password.");
             editConfirmPassword.requestFocus();
             return false;
         }
         if (!password.equals(confirmPassword)) {
-            editConfirmPassword.setError("Password and confirm password does not match");
+            editConfirmPassword.setError("Password and confirm password does not match!");
             editConfirmPassword.requestFocus();
             return false;
         }
