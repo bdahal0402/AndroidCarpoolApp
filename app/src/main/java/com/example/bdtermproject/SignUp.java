@@ -105,9 +105,9 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void loadDashboard() {
-        Login.loggedInUser = username;
-        UserSettings.getUserDetails(Login.loggedInUser, this);
-        Intent i = new Intent(getApplicationContext(), HomePage.class);
+
+        Login.signUpSuccess = "yes";
+        Intent i = new Intent(getApplicationContext(), Login.class);
         startActivity(i);
         finish();
 

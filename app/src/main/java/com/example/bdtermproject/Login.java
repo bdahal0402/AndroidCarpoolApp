@@ -3,6 +3,7 @@ package com.example.bdtermproject;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -24,6 +25,7 @@ public class Login extends AppCompatActivity {
 
     public static String loggedInUser;
 
+    public static String  signUpSuccess;
     private static final String KEY_STATUS = "status";
     private static final String KEY_MESSAGE = "message";
     private static final String KEY_FULL_NAME = "FullName";
@@ -42,6 +44,10 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
+        if (signUpSuccess == "yes") {
+            Toast.makeText(this, "Signup successful, please login to continue!", Toast.LENGTH_SHORT).show();
+            signUpSuccess = "no";
+        }
         editUsername = findViewById(R.id.loginUsername);
         editPassword = findViewById(R.id.loginPassword);
 
@@ -73,7 +79,6 @@ public class Login extends AppCompatActivity {
 
     private void loadDashboard() {
         loggedInUser = username;
-        UserSettings.getUserDetails(Login.loggedInUser, this);
         Intent i = new Intent(getApplicationContext(), HomePage.class);
         startActivity(i);
         finish();
@@ -107,6 +112,11 @@ public class Login extends AppCompatActivity {
                         pDialog.dismiss();
                         try {
                             if (response.getInt(KEY_STATUS) == 0) {
+                                UserSettings.userRideOption = response.getString("rideOption");
+                                UserSettings.userActivityStatus = response.getString("activityStatus");
+                                UserSettings.userStartAddress = response.getString("address");
+                                UserSettings.userDestination = response.getString("destination");
+
                                 loadDashboard();
 
                             }else{
