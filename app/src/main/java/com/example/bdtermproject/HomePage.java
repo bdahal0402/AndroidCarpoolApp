@@ -3,8 +3,10 @@ package com.example.bdtermproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -16,6 +18,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.MapView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +33,12 @@ public class HomePage extends FragmentActivity {
     ArrayAdapter<String> adapter;
     ListView listView;
     static ArrayList<String> userData = new ArrayList<>();
+    static ArrayList<String> userFullName = new ArrayList<>();
+    static ArrayList<String> userLocation = new ArrayList<>();
+    static ArrayList<String> userDestination = new ArrayList<>();
+    static ArrayList<String> userRideOption = new ArrayList<>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +67,7 @@ public class HomePage extends FragmentActivity {
 
         updateList();
 
+
     }
 
     void updateList(){
@@ -68,6 +79,10 @@ public class HomePage extends FragmentActivity {
             dataUrl = "http://136.32.51.159/carpool/activeLooking.php";
 
         userData.clear();
+        userDestination.clear();
+        userLocation.clear();
+        userDestination.clear();
+        userFullName.clear();
 
         StringRequest stringRequest = new StringRequest(dataUrl, new Response.Listener<String>() {
             @Override
@@ -80,12 +95,20 @@ public class HomePage extends FragmentActivity {
                         String fullname = e.getString("FullName");
                         String address = e.getString("Location");
                         String destination = e.getString("Destination");
-                        if (e.getString("UseStatus").toLowerCase().equals("looking"))
+                        String rideOption = e.getString("UseStatus").toLowerCase();
+                        if (rideOption.equals("looking"))
                             userData.add(fullname + " - Looking for a ride\nPickup: " + address + "\nDestination: " + destination);
-                        if (e.getString("UseStatus").toLowerCase().equals("offering"))
+                        if (rideOption.equals("offering"))
                             userData.add(fullname + " - Offering a ride\nDestination: " + destination);
-                        setList();
+
+                        userFullName.add(fullname);
+                        userLocation.add(address);
+                        userDestination.add(destination);
+                        userRideOption.add(rideOption);
+
                     }
+
+                    setList();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -98,6 +121,8 @@ public class HomePage extends FragmentActivity {
         });
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(stringRequest);
+
+
     }
 
     public void setList(){
@@ -107,7 +132,11 @@ public class HomePage extends FragmentActivity {
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.usersList, userListFragment);
         transaction.commit();
+
+
     }
+
+
 
 }
 
