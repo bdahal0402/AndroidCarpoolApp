@@ -28,7 +28,6 @@ public class Login extends AppCompatActivity {
     public static String  signUpSuccess;
     private static final String KEY_STATUS = "status";
     private static final String KEY_MESSAGE = "message";
-    private static final String KEY_FULL_NAME = "FullName";
     private static final String KEY_USERNAME = "Username";
     private static final String KEY_PASSWORD = "Password";
     private static final String KEY_EMPTY = "";

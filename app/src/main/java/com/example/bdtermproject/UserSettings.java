@@ -34,9 +34,6 @@ public class UserSettings extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_setting);
-        //getUserDetails(Login.loggedInUser, this);
-
-
 
         final Button activityButton = findViewById(R.id.activityStatus);
         final Button rideButton = findViewById(R.id.rideOption);
@@ -73,7 +70,7 @@ public class UserSettings extends Activity {
         rideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                  adjustRideButton();
+                adjustRideButton();
             }
         });
 
@@ -133,9 +130,9 @@ public class UserSettings extends Activity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 Intent i = new Intent(getApplicationContext(), HomePage.class);
-                 startActivity(i);
-                 finish();
+                Intent i = new Intent(getApplicationContext(), HomePage.class);
+                startActivity(i);
+                finish();
             }
         });
     }

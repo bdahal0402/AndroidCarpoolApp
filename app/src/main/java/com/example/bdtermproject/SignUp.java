@@ -1,22 +1,21 @@
 package com.example.bdtermproject;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
+
 
 public class SignUp extends AppCompatActivity {
 
@@ -36,8 +35,8 @@ public class SignUp extends AppCompatActivity {
     private EditText editEmail;
     private EditText editFirstName;
     private EditText editLastName;
-    private EditText editAddress;
-    private EditText editDestination;
+    private AutoCompleteTextView editAddress;
+    private AutoCompleteTextView editDestination;
     private String username;
     private String password;
     private String confirmPassword;
@@ -47,7 +46,10 @@ public class SignUp extends AppCompatActivity {
     private String signUpAddress;
     private String signUpDestination;
 
+
+
     private String register_url = "http://136.32.51.159/carpool/register.php";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,8 @@ public class SignUp extends AppCompatActivity {
         editLastName = findViewById(R.id.signUpLastName);
         editAddress = findViewById(R.id.signUpAddress);
         editDestination = findViewById(R.id.signUpDestination);
+
+
 
         Button login = findViewById(R.id.backToLogin);
         Button register = findViewById(R.id.signUpClick);
@@ -214,4 +218,6 @@ public class SignUp extends AppCompatActivity {
 
         return true;
     }
+
+
 }

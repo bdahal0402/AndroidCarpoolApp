@@ -1,21 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
-
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/usersList"
-        >
 
         <Button
             android:id="@+id/userSettingBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/gear" />
+    <Button
+        android:id="@+id/refreshBtn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/userSettingBtn"
+        android:background="@drawable/baseline_refresh_black_18dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/userSettingBtn"
+        android:id="@+id/carLogo"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:src="@drawable/carpool"/>
+    </RelativeLayout>
+
+
+    <FrameLayout
+        android:layout_below="@id/carLogo"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/usersList"
+        >
+
+
     </FrameLayout>
 
-</LinearLayout>
+</RelativeLayout>
