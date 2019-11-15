@@ -115,6 +115,10 @@ public class Login extends AppCompatActivity {
                                 UserSettings.userActivityStatus = response.getString("activityStatus");
                                 UserSettings.userStartAddress = response.getString("address");
                                 UserSettings.userDestination = response.getString("destination");
+                                UserSettings.addressLatitude = response.getString("startLat");
+                                UserSettings.addressLongitude = response.getString("startLong");
+                                UserSettings.destLatitude = response.getString("destLat");
+                                UserSettings.destLongitude = response.getString("destLong");
 
                                 loadDashboard();
 

@@ -9,25 +9,42 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 
-public class UserSettings extends Activity {
+public class UserSettings extends FragmentActivity {
 
 
     public static String userRideOption;
     public static String userActivityStatus;
     public static String userStartAddress;
     public static String userDestination;
+    public static String addressLatitude;
+    public static String addressLongitude;
+    public static String destLatitude;
+    public static String destLongitude;
+
+    PlacesClient placesClient;
 
 
     @Override
@@ -60,6 +77,54 @@ public class UserSettings extends Activity {
             activityButton.setText("ACTIVITY STATUS: INACTIVE");
 
 
+
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), getString(R.string.map_key));
+        }
+        placesClient = Places.createClient(this);
+
+        final AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragmentAddress);
+        final AutocompleteSupportFragment autocompleteSupportFragmentDest = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragmentAddressDest);
+        autocompleteSupportFragment.setHint("Update address here");
+        autocompleteSupportFragmentDest.setHint("Update destination here");
+
+        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
+        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                final LatLng latLng = place.getLatLng();
+                startAddress.setText(place.getName());
+                addressLatitude = String.valueOf(latLng.latitude);
+                addressLongitude = String.valueOf(latLng.longitude);
+
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Toast.makeText(getApplicationContext(), "Something went wrong getting the address", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        autocompleteSupportFragmentDest.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
+        autocompleteSupportFragmentDest.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                final LatLng latLng = place.getLatLng();
+                destination.setText(place.getName());
+                destLatitude = String.valueOf(latLng.latitude);
+                destLongitude = String.valueOf(latLng.longitude);
+
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Toast.makeText(getApplicationContext(), "Something went wrong getting the destination", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
         activityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,7 +153,10 @@ public class UserSettings extends Activity {
                     request.put("RideOption", userRideOption);
                     request.put("Address", startAddress.getText().toString());
                     request.put("Destination", destination.getText().toString());
-
+                    request.put("startLat", addressLatitude);
+                    request.put("startLong", addressLongitude);
+                    request.put("destLat", destLatitude);
+                    request.put("destLong", destLongitude);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

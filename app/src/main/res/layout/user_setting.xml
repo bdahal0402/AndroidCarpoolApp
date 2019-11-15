@@ -76,6 +76,27 @@
         android:layout_height="1dp"
         android:background="#000000"
         />
+
+            <fragment
+                android:id="@+id/autocomplete_fragmentAddress"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:inputType="textPassword"
+                android:textColor="#000000"
+                android:ems="10"
+                android:drawablePadding="12dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:textColorHint="#000000"
+                android:hint="Password"
+                android:maxLines="1"
+                android:background="@android:color/transparent"
+                android:layout_marginTop="4dp"
+                />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -91,14 +112,39 @@
         android:hint="Start Address"
         android:maxLines="1"
         android:drawableLeft="@drawable/ic_home_24dp"
+        android:enabled="false"
         android:background="@android:color/transparent"
         />
+
+
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#000000"
         />
+
+
+            <fragment
+                android:id="@+id/autocomplete_fragmentAddressDest"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:inputType="textPassword"
+                android:textColor="#000000"
+                android:ems="10"
+                android:drawablePadding="12dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:textColorHint="#000000"
+                android:hint="Password"
+                android:maxLines="1"
+                android:background="@android:color/transparent"
+                android:layout_marginTop="4dp"
+                />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -116,6 +162,7 @@
         android:drawableLeft="@drawable/ic_car_24dp"
         android:background="@android:color/transparent"
         android:layout_marginTop="5dp"
+        android:enabled="false"
         />
     <View
         android:layout_width="match_parent"
