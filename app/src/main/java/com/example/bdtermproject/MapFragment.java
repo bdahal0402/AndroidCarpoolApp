@@ -17,6 +17,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
@@ -66,6 +67,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Button matchBtn = getView().findViewById(R.id.matchBtn);
         if (UserSettings.userRideOption.toLowerCase().equals("looking")) {
             matchBtn.setText("Request ride");
+           
 
             googleMap.addMarker(new MarkerOptions().position(new LatLng(40.689247, -74.044502))
                     .title(userClickedName))

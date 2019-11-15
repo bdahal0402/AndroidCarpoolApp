@@ -7,14 +7,26 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 
 public class SignUp extends AppCompatActivity {
@@ -28,6 +40,12 @@ public class SignUp extends AppCompatActivity {
     private static final String KEY_EMAIL = "Email";
     private static final String KEY_ADDRESS = "Address";
     private static final String KEY_DESTINATION = "Destination";
+    private static final String KEY_STARTLAT = "StartLat";
+    private static final String KEY_STARTLONG = "StartLong";
+    private static final String KEY_DESTLAT = "DestLat";
+    private static final String KEY_DESTLONG = "DestLong";
+
+
     private static final String KEY_EMPTY = "";
     private EditText editUsername;
     private EditText editPassword;
@@ -35,8 +53,9 @@ public class SignUp extends AppCompatActivity {
     private EditText editEmail;
     private EditText editFirstName;
     private EditText editLastName;
-    private AutoCompleteTextView editAddress;
-    private AutoCompleteTextView editDestination;
+    private EditText startAddress;
+    private EditText destAddress;
+
     private String username;
     private String password;
     private String confirmPassword;
@@ -45,12 +64,16 @@ public class SignUp extends AppCompatActivity {
     private String email;
     private String signUpAddress;
     private String signUpDestination;
+    private String addressLatitude;
+    private String addressLongitude;
+    private String destLatitude;
+    private String destLongitude;
 
 
 
     private String register_url = "http://136.32.51.159/carpool/register.php";
 
-
+    PlacesClient placesClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +85,53 @@ public class SignUp extends AppCompatActivity {
         editEmail = findViewById(R.id.signUpEmail);
         editFirstName = findViewById(R.id.signUpFirstName);
         editLastName = findViewById(R.id.signUpLastName);
-        editAddress = findViewById(R.id.signUpAddress);
-        editDestination = findViewById(R.id.signUpDestination);
+        destAddress = findViewById(R.id.destVal);
+        startAddress = findViewById(R.id.addressVal);
 
+
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), getString(R.string.map_key));
+        }
+        placesClient = Places.createClient(this);
+
+        final AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragmentAddress);
+        final AutocompleteSupportFragment autocompleteSupportFragmentDest = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragmentAddressDest);
+        autocompleteSupportFragment.setHint("Address");
+        autocompleteSupportFragmentDest.setHint("Destination");
+
+        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
+        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                final LatLng latLng = place.getLatLng();
+                startAddress.setText(place.getName());
+                addressLatitude = String.valueOf(latLng.latitude);
+                addressLongitude = String.valueOf(latLng.longitude);
+
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+
+            }
+        });
+
+        autocompleteSupportFragmentDest.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
+        autocompleteSupportFragmentDest.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                final LatLng latLng = place.getLatLng();
+                destAddress.setText(place.getName());
+                destLatitude = String.valueOf(latLng.latitude);
+                destLongitude = String.valueOf(latLng.longitude);
+
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+
+            }
+        });
 
 
         Button login = findViewById(R.id.backToLogin);
@@ -88,8 +155,8 @@ public class SignUp extends AppCompatActivity {
                 confirmPassword = editConfirmPassword.getText().toString().trim();
                 firstName = editFirstName.getText().toString().trim();
                 lastName = editLastName.getText().toString().trim();
-                signUpAddress = editAddress.getText().toString().trim();
-                signUpDestination = editDestination.getText().toString().trim();
+                signUpAddress = startAddress.getText().toString().trim();
+                signUpDestination = destAddress.getText().toString().trim();
                 if (validateInputs()) {
                     registerUser();
                 }
@@ -127,6 +194,11 @@ public class SignUp extends AppCompatActivity {
             request.put(KEY_EMAIL, email);
             request.put(KEY_ADDRESS, signUpAddress);
             request.put(KEY_DESTINATION, signUpDestination);
+            request.put(KEY_STARTLAT, addressLatitude);
+            request.put(KEY_STARTLONG, addressLongitude);
+            request.put(KEY_DESTLAT, destLatitude);
+            request.put(KEY_DESTLONG, destLongitude);
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -189,13 +261,11 @@ public class SignUp extends AppCompatActivity {
         }
 
         if (KEY_EMPTY.equals(signUpAddress)){
-            editAddress.setError("Please fill out your address.");
-            editAddress.requestFocus();
+            Toast.makeText(this, "Please fill out the address.", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (KEY_EMPTY.equals(signUpDestination)){
-            editDestination.setError("Please fill out your destination.");
-            editDestination.requestFocus();
+            Toast.makeText(this, "Please fill out the destination.", Toast.LENGTH_SHORT).show();
             return false;
         }
 
