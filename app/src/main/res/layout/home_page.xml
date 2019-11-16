@@ -27,23 +27,34 @@
         android:textColor="@color/red_primary"
         android:layout_marginLeft="20dp"
         android:background="@drawable/button_round"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trips"
+        android:id="@+id/matchedUsers"
+        android:layout_toRightOf="@+id/refreshBtn"
+        android:layout_below="@+id/logoutButton"
+        android:textColor="@color/blue_primary_dark"
+        android:background="@drawable/button_round2"
+        android:layout_marginLeft="20dp" />
+
 
     <RelativeLayout
+        android:id="@+id/carLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
         android:layout_toRightOf="@+id/userSettingBtn"
-        android:id="@+id/carLogo"
         android:gravity="center">
+
         <ImageView
-            android:layout_width="wrap_content"
             android:id="@+id/logoIcon"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:src="@drawable/carpool"/>
+            android:src="@drawable/carpool" />
 
     </RelativeLayout>
-
-
 
     <FrameLayout
         android:layout_below="@id/carLogo"

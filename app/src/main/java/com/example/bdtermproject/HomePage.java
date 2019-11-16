@@ -54,6 +54,16 @@ public class HomePage extends FragmentActivity {
         Button settings = findViewById(R.id.userSettingBtn);
         Button refresh = findViewById(R.id.refreshBtn);
         Button logout = findViewById(R.id.logoutButton);
+        Button trips = findViewById(R.id.matchedUsers);
+
+        trips.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomePage.this, Trips.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override

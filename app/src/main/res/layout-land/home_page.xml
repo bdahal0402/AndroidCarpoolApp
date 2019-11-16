@@ -29,6 +29,16 @@
             android:textColor="@color/red_primary"
             android:background="@drawable/button_round"
             android:layout_marginLeft="20dp" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trips"
+            android:id="@+id/matchedUsers"
+            android:layout_toRightOf="@+id/refreshBtn"
+            android:layout_below="@+id/logoutButton"
+            android:textColor="@color/blue_primary_dark"
+            android:background="@drawable/button_round2"
+            android:layout_marginLeft="20dp" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
