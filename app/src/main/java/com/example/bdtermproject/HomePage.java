@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +40,9 @@ public class HomePage extends FragmentActivity {
     static ArrayList<String> userLocation = new ArrayList<>();
     static ArrayList<String> userDestination = new ArrayList<>();
     static ArrayList<String> userRideOption = new ArrayList<>();
+    static ArrayList<LatLng> userAddressLatLng = new ArrayList<>();
+    static ArrayList<LatLng> userDestinationLatLng = new ArrayList<>();
+
 
 
 
@@ -47,7 +53,16 @@ public class HomePage extends FragmentActivity {
         context = this;
         Button settings = findViewById(R.id.userSettingBtn);
         Button refresh = findViewById(R.id.refreshBtn);
+        Button logout = findViewById(R.id.logoutButton);
 
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Login.class);
+                ActivityCompat.finishAffinity(HomePage.this);
+                startActivity(intent);
+            }
+        });
 
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +111,9 @@ public class HomePage extends FragmentActivity {
                         String address = e.getString("Location");
                         String destination = e.getString("Destination");
                         String rideOption = e.getString("UseStatus").toLowerCase();
+                        LatLng addressLatLng = new LatLng(Double.parseDouble(e.getString("AddressLatitude")), Double.parseDouble(e.getString("AddressLongitude")));
+                        LatLng userDestLatLng = new LatLng(Double.parseDouble(e.getString("DestLatitude")), Double.parseDouble(e.getString("DestLongitude")));
+
                         if (rideOption.equals("looking"))
                             userData.add(fullname + " - Looking for a ride\nPickup: " + address + "\nDestination: " + destination);
                         if (rideOption.equals("offering"))
@@ -105,6 +123,9 @@ public class HomePage extends FragmentActivity {
                         userLocation.add(address);
                         userDestination.add(destination);
                         userRideOption.add(rideOption);
+                        userAddressLatLng.add(addressLatLng);
+                        userDestinationLatLng.add(userDestLatLng);
+                        UserList.noUsers = false;
 
                     }
 
@@ -112,11 +133,16 @@ public class HomePage extends FragmentActivity {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    HomePage.userData.add("Your ride options do not match any other users. Please check again later.");
+                    UserList.noUsers = true;
+                    setList();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+
             }
         });
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -126,6 +152,7 @@ public class HomePage extends FragmentActivity {
     }
 
     public void setList(){
+
 
         UserList userListFragment = new UserList();
         FragmentManager fm = getSupportFragmentManager();

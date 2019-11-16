@@ -9,15 +9,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class UserList extends Fragment  {
+    static boolean noUsers;
 
     public static ListView lv;
     @Override
@@ -28,10 +32,11 @@ public class UserList extends Fragment  {
         View v =  inflator.inflate(R.layout.users_listview, container,false);
         lv = v.findViewById(R.id.users_list_view);
 
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.textcenter, R.id.textItem, HomePage.userData);
         lv.setAdapter(adapter);
-
-
+        if (noUsers)
+            return v;
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -40,6 +45,9 @@ public class UserList extends Fragment  {
                 MapFragment.userClickedName = HomePage.userFullName.get(position);
                 MapFragment.userClickedAddress = HomePage.userLocation.get(position);
                 MapFragment.userClickedDestination = HomePage.userDestination.get(position);
+                MapFragment.userClickedAddressLatLng = HomePage.userAddressLatLng.get(position);
+                MapFragment.userClickedDestLatLng = HomePage.userDestinationLatLng.get(position);
+
                 if (HomePage.userRideOption.get(position).toLowerCase().equals("offering"))
                     MapFragment.userClickedDescription = "Offering - Destination";
                 MapFragment mapFragment = new MapFragment();

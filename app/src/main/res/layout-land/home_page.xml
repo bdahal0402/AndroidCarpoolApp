@@ -20,6 +20,15 @@
             android:layout_marginTop="10dp"
             android:layout_below="@id/userSettingBtn"
             android:background="@drawable/baseline_refresh_black_18dp" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout?"
+            android:id="@+id/logoutButton"
+            android:layout_toRightOf="@+id/userSettingBtn"
+            android:textColor="@color/red_primary"
+            android:background="@drawable/button_round"
+            android:layout_marginLeft="20dp" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

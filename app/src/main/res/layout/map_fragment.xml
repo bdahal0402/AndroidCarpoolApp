@@ -15,8 +15,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
+            android:background="@drawable/requestbtn"
             android:id="@+id/matchBtn"
             android:text="MATCH"
+            android:textColor="@color/black"
             android:padding="10dp"
             android:layout_marginBottom="20dp"
             android:paddingRight="10dp"/>

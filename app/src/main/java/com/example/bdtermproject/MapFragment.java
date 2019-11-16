@@ -30,6 +30,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public static String userClickedDescription;
     public static String userClickedAddress;
     public static String userClickedDestination;
+    public static LatLng userClickedAddressLatLng;
+    public static LatLng userClickedDestLatLng;
+
 
 
     public MapFragment(){}
@@ -61,31 +64,51 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        CameraPosition pos = CameraPosition.builder().target(new LatLng(40.689247, -74.044502)).zoom(16).bearing(0).tilt(0).build();
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
+        LatLng cameraMidpoint = userClickedDestLatLng;
+        float cameraBearing = 0;
 
         Button matchBtn = getView().findViewById(R.id.matchBtn);
         if (UserSettings.userRideOption.toLowerCase().equals("looking")) {
             matchBtn.setText("Request ride");
            
 
-            googleMap.addMarker(new MarkerOptions().position(new LatLng(40.689247, -74.044502))
+            googleMap.addMarker(new MarkerOptions().position(userClickedDestLatLng)
                     .title(userClickedName))
                     .setSnippet("Destination");
 
         }
         else if (UserSettings.userRideOption.toLowerCase().equals("offering")) {
             matchBtn.setText("Offer ride");
-            googleMap.addMarker(new MarkerOptions().position(new LatLng(40.689247, -74.044502))
+            googleMap.addMarker(new MarkerOptions().position(userClickedAddressLatLng)
                     .title(userClickedName))
                     .setSnippet("Pick up location");
 
-            googleMap.addMarker(new MarkerOptions().position(new LatLng(50.689247, -74.044502))
+            googleMap.addMarker(new MarkerOptions().position(userClickedDestLatLng)
                     .title(userClickedName))
                     .setSnippet("Destination");
 
+            cameraMidpoint = midPoint(userClickedAddressLatLng.latitude, userClickedAddressLatLng.longitude, userClickedDestLatLng.latitude, userClickedDestLatLng.longitude);
+            cameraBearing = angleBetweenCoordinate(userClickedAddressLatLng.latitude, userClickedAddressLatLng.longitude, userClickedDestLatLng.latitude, userClickedDestLatLng.longitude);
+
         }
+        googleMap.setMyLocationEnabled(true);
+        CameraPosition pos = CameraPosition.builder().target(cameraMidpoint).zoom(10).bearing(cameraBearing).tilt(0).build();
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
 
     }
+
+    private LatLng midPoint(double lat1, double long1, double lat2,double long2)
+    {
+        return new LatLng((lat1+lat2)/2, (long1+long2)/2);
+    }
+
+    private float angleBetweenCoordinate(double lat1, double long1, double lat2,
+                                         double long2) {
+
+        double xDiff = lat2 - lat2;
+        double yDiff = long2 - long1;
+        return (float)(Math.atan2(yDiff, xDiff) * 180.0 / Math.PI);
+    }
+
 
 }

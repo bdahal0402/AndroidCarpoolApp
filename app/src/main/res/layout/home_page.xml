@@ -18,6 +18,15 @@
         android:layout_marginTop="5dp"
         android:layout_below="@id/userSettingBtn"
         android:background="@drawable/baseline_refresh_black_18dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout?"
+        android:id="@+id/logoutButton"
+        android:layout_toRightOf="@+id/userSettingBtn"
+        android:textColor="@color/red_primary"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/button_round"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -27,10 +36,13 @@
         android:gravity="center">
         <ImageView
             android:layout_width="wrap_content"
+            android:id="@+id/logoIcon"
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:src="@drawable/carpool"/>
+
     </RelativeLayout>
+
 
 
     <FrameLayout
