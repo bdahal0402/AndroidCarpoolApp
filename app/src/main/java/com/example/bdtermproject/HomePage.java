@@ -37,6 +37,7 @@ public class HomePage extends FragmentActivity {
     ListView listView;
     static ArrayList<String> userData = new ArrayList<>();
     static ArrayList<String> userFullName = new ArrayList<>();
+    static ArrayList<String> userUsername = new ArrayList<>();
     static ArrayList<String> userLocation = new ArrayList<>();
     static ArrayList<String> userDestination = new ArrayList<>();
     static ArrayList<String> userRideOption = new ArrayList<>();
@@ -123,12 +124,14 @@ public class HomePage extends FragmentActivity {
                         String rideOption = e.getString("UseStatus").toLowerCase();
                         LatLng addressLatLng = new LatLng(Double.parseDouble(e.getString("AddressLatitude")), Double.parseDouble(e.getString("AddressLongitude")));
                         LatLng userDestLatLng = new LatLng(Double.parseDouble(e.getString("DestLatitude")), Double.parseDouble(e.getString("DestLongitude")));
+                        String usn = e.getString("Username");
 
                         if (rideOption.equals("looking"))
                             userData.add(fullname + " - Looking for a ride\nPickup: " + address + "\nDestination: " + destination);
                         if (rideOption.equals("offering"))
                             userData.add(fullname + " - Offering a ride\nDestination: " + destination);
 
+                        userUsername.add(usn);
                         userFullName.add(fullname);
                         userLocation.add(address);
                         userDestination.add(destination);

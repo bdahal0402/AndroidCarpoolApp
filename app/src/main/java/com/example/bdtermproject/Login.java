@@ -18,12 +18,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Login extends AppCompatActivity {
 
     public static String loggedInUser;
+    public static String loggedInUserFullName;
 
     public static String  signUpSuccess;
     private static final String KEY_STATUS = "status";
@@ -119,6 +121,63 @@ public class Login extends AppCompatActivity {
                                 UserSettings.addressLongitude = response.getString("startLong");
                                 UserSettings.destLatitude = response.getString("destLat");
                                 UserSettings.destLongitude = response.getString("destLong");
+                                String userRequests = response.getString("requestReceived");
+                                String userMatches = response.getString("matches");
+                                String userSentRequests = response.getString("requestSent");
+                                loggedInUserFullName = response.getString("FullName");
+
+                                if (userRequests.contains("user")) {
+                                    if (userRequests.endsWith(",")) {
+                                        userRequests = removeLastChar(userRequests);
+                                        userRequests += "]";
+                                    }
+
+                                    try {
+                                        JSONArray json = new JSONArray(userRequests);
+                                        for (int i = 0; i < json.length(); i++) {
+                                            JSONObject e = new JSONObject(json.getJSONObject(i).toString());
+                                            UserSettings.requests.add(e.getString("user")+ " - " + e.getString("fullname"));
+                                        }
+                                    } catch (JSONException E) {
+                                        E.printStackTrace();
+                                    }
+                                }
+
+                                if (userMatches.contains("user")) {
+                                    if (userMatches.endsWith(",")) {
+                                        userMatches = removeLastChar(userMatches);
+                                        userMatches += "]";
+                                    }
+
+                                    try {
+                                        JSONArray json = new JSONArray(userMatches);
+                                        for (int i = 0; i < json.length(); i++) {
+                                            JSONObject e = new JSONObject(json.getJSONObject(i).toString());
+                                            UserSettings.matches.add(e.getString("user")+ " - " + e.getString("fullname"));
+                                        }
+                                    } catch (JSONException E) {
+                                        E.printStackTrace();
+                                    }
+                                }
+
+                                if (userSentRequests.contains("user")) {
+                                    if (userSentRequests.endsWith(",")) {
+                                        userSentRequests = removeLastChar(userSentRequests);
+                                        userSentRequests += "]";
+                                    }
+
+                                    try {
+                                        JSONArray json = new JSONArray(userSentRequests);
+                                        for (int i = 0; i < json.length(); i++) {
+                                            JSONObject e = new JSONObject(json.getJSONObject(i).toString());
+                                            UserSettings.sentRequests.add(e.getString("user")+ " - " + e.getString("fullname"));
+                                        }
+                                    } catch (JSONException E) {
+                                        E.printStackTrace();
+                                    }
+                                }
+
+
 
                                 loadDashboard();
 
@@ -158,5 +217,10 @@ public class Login extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+    public static String removeLastChar(String s) {
+        return (s == null || s.length() == 0)
+                ? null
+                : (s.substring(0, s.length() - 1));
     }
 }

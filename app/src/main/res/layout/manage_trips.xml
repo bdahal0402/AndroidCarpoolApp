@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    >
+
+
+    <Button
+        android:id="@+id/userSettingBtn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/gear" />
+    <Button
+        android:id="@+id/refreshBtn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/userSettingBtn"
+        android:background="@drawable/baseline_refresh_black_18dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Home Page"
+        android:id="@+id/homePage"
+        android:layout_toRightOf="@+id/refreshBtn"
+        android:layout_below="@+id/logoutButton"
+        android:textColor="@color/blue_primary_dark"
+        android:background="@drawable/button_round2"
+        android:layout_marginLeft="20dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Requests"
+        android:id="@+id/matchedUsers"
+        android:layout_toRightOf="@+id/refreshBtn"
+        android:layout_below="@+id/homePage"
+        android:textColor="@color/blue_primary_dark"
+        android:background="@drawable/button_round2"
+        android:layout_marginLeft="20dp" />
+
+
+    <RelativeLayout
+        android:id="@+id/carLogo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_toRightOf="@+id/userSettingBtn"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/logoIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:src="@drawable/carpool" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_below="@id/carLogo"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/matchedUserList"
+        >
+
+
+    </FrameLayout>
+
+</RelativeLayout>

@@ -43,9 +43,11 @@ public class UserSettings extends FragmentActivity {
     public static String addressLongitude;
     public static String destLatitude;
     public static String destLongitude;
+    public static ArrayList<String> requests = new ArrayList<>();
+    public static ArrayList<String> sentRequests = new ArrayList<>();
+    public static ArrayList<String> matches = new ArrayList<>();
 
     PlacesClient placesClient;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

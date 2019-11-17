@@ -254,6 +254,7 @@ public class SignUp extends AppCompatActivity {
             editUsername.requestFocus();
             return false;
         }
+
         if (KEY_EMPTY.equals(password)) {
             editPassword.setError("Please fill out the password.");
             editPassword.requestFocus();
@@ -283,6 +284,24 @@ public class SignUp extends AppCompatActivity {
         if (!password.equals(confirmPassword)) {
             editConfirmPassword.setError("Password and confirm password does not match!");
             editConfirmPassword.requestFocus();
+            return false;
+        }
+
+        if (password.length() < 6){
+            editPassword.setError("The password has to be at least 6 characters.");
+            editPassword.requestFocus();
+            return false;
+        }
+
+        if (!username.matches("^[a-z0-9_-]{3,15}$")){
+            editUsername.setError("The username is invalid. Use at least 3 characters and maximum 15.");
+            editUsername.requestFocus();
+            return false;
+        }
+        String emailRegex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
+        if (!email.matches(emailRegex)){
+            editEmail.setError("Please ensure that the email address is valid.");
+            editEmail.requestFocus();
             return false;
         }
 

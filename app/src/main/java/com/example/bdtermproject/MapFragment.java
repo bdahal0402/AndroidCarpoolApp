@@ -6,9 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,12 +25,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     GoogleMap mGoogleMap;
     MapView mMapView;
     View mView;
 
+    public static String userClickedUsername;
     public static String userClickedName;
     public static String userClickedDescription;
     public static String userClickedAddress;
@@ -34,11 +43,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public static LatLng userClickedDestLatLng;
 
 
-
     public MapFragment(){}
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {super.onCreate(savedInstanceState);}
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -67,10 +78,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         LatLng cameraMidpoint = userClickedDestLatLng;
         float cameraBearing = 0;
 
-        Button matchBtn = getView().findViewById(R.id.matchBtn);
+        final Button matchBtn = getView().findViewById(R.id.matchBtn);
+
+
+
+
         if (UserSettings.userRideOption.toLowerCase().equals("looking")) {
             matchBtn.setText("Request ride");
-           
+
+
+
 
             googleMap.addMarker(new MarkerOptions().position(userClickedDestLatLng)
                     .title(userClickedName))
@@ -79,6 +96,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         else if (UserSettings.userRideOption.toLowerCase().equals("offering")) {
             matchBtn.setText("Offer ride");
+
             googleMap.addMarker(new MarkerOptions().position(userClickedAddressLatLng)
                     .title(userClickedName))
                     .setSnippet("Pick up location");
@@ -94,6 +112,82 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         googleMap.setMyLocationEnabled(true);
         CameraPosition pos = CameraPosition.builder().target(cameraMidpoint).zoom(10).bearing(cameraBearing).tilt(0).build();
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
+        matchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userDetailsURL = "http://136.32.51.159/carpool/sendRequest.php";
+
+                boolean alreadyRequested = false;
+                for (int i=0; i< UserSettings.sentRequests.size(); i++){
+                    if (UserSettings.sentRequests.get(i).contains(userClickedUsername))
+                        alreadyRequested = true;
+                }
+
+
+
+
+                if (alreadyRequested){
+                    if (UserSettings.userRideOption.toLowerCase().equals("looking")) {
+                        Toast.makeText(getContext(), "You've already sent this user a request.", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                        Toast.makeText(getContext(), "You've already offered this use a ride.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(UserSettings.userActivityStatus.toLowerCase().equals("inactive")){
+                    Toast.makeText(getContext(), "You must set your activity status to active first.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                JSONObject request = new JSONObject();
+                try {
+                    request.put("user1", Login.loggedInUser);
+                    request.put("user2", userClickedUsername);
+                    request.put("user1Full", Login.loggedInUserFullName);
+                    request.put("user2Full", userClickedName);
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                JsonObjectRequest jsArrayRequest = new JsonObjectRequest
+                        (Request.Method.POST, userDetailsURL, request, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    if (response.getInt("status") == 0) {
+                                        if (UserSettings.userRideOption.toLowerCase().equals("looking"))
+                                            Toast.makeText(getContext(),
+                                                "Requested ride successfully!", Toast.LENGTH_SHORT).show();
+                                        else
+                                            Toast.makeText(getContext(),
+                                                    "Offered ride successfully!", Toast.LENGTH_SHORT).show();
+                                        UserSettings.sentRequests.add(userClickedUsername + " - " + userClickedName);
+
+                                    }else{
+                                        Toast.makeText(getContext(),
+                                                "Error! Something went wrong!", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                                Toast.makeText(getContext(),
+                                        "Something went wrong updating the record!", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+                RequestCall.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+            }
+        });
 
     }
 

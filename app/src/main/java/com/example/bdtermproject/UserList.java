@@ -47,12 +47,14 @@ public class UserList extends Fragment  {
                 MapFragment.userClickedDestination = HomePage.userDestination.get(position);
                 MapFragment.userClickedAddressLatLng = HomePage.userAddressLatLng.get(position);
                 MapFragment.userClickedDestLatLng = HomePage.userDestinationLatLng.get(position);
+                MapFragment.userClickedUsername = HomePage.userUsername.get(position);
 
                 HomePage.userFullName.clear();
                 HomePage.userLocation.clear();
                 HomePage.userDestination.clear();
                 HomePage.userAddressLatLng.clear();
                 HomePage.userDestinationLatLng.clear();
+
 
                 if (HomePage.userRideOption.get(position).toLowerCase().equals("offering"))
                     MapFragment.userClickedDescription = "Offering - Destination";
