@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +43,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public static LatLng userClickedAddressLatLng;
     public static LatLng userClickedDestLatLng;
 
+    public static boolean alreadyRequested;
 
     public MapFragment(){}
 
@@ -109,34 +111,36 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             cameraBearing = angleBetweenCoordinate(userClickedAddressLatLng.latitude, userClickedAddressLatLng.longitude, userClickedDestLatLng.latitude, userClickedDestLatLng.longitude);
 
         }
+
         googleMap.setMyLocationEnabled(true);
         CameraPosition pos = CameraPosition.builder().target(cameraMidpoint).zoom(10).bearing(cameraBearing).tilt(0).build();
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
+
+        alreadyRequested = false;
+        for (int i =0; i< UserSettings.sentRequests.size(); i++){
+            if (UserSettings.requests.get(i).contains(userClickedUsername)) {
+                alreadyRequested = true;
+                if (UserSettings.userRideOption.toLowerCase().equals("looking"))
+                    matchBtn.setText("Cancel request");
+                else
+                    matchBtn.setText("Cancel offer");
+            }
+        }
+
         matchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String userDetailsURL = "http://136.32.51.159/carpool/sendRequest.php";
 
-                boolean alreadyRequested = false;
-                for (int i=0; i< UserSettings.sentRequests.size(); i++){
-                    if (UserSettings.sentRequests.get(i).contains(userClickedUsername))
-                        alreadyRequested = true;
-                }
 
 
 
+                if(alreadyRequested){
 
-                if (alreadyRequested){
-                    if (UserSettings.userRideOption.toLowerCase().equals("looking")) {
-                        Toast.makeText(getContext(), "You've already sent this user a request.", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                        Toast.makeText(getContext(), "You've already offered this use a ride.", Toast.LENGTH_SHORT).show();
-                    return;
                 }
 
                 if(UserSettings.userActivityStatus.toLowerCase().equals("inactive")){
-                    Toast.makeText(getContext(), "You must set your activity status to active first.", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(getContext(), "You must set your activity status to active first.", TastyToast.LENGTH_SHORT, TastyToast.CONFUSING);
                     return;
                 }
 
@@ -158,17 +162,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             public void onResponse(JSONObject response) {
                                 try {
                                     if (response.getInt("status") == 0) {
-                                        if (UserSettings.userRideOption.toLowerCase().equals("looking"))
-                                            Toast.makeText(getContext(),
-                                                "Requested ride successfully!", Toast.LENGTH_SHORT).show();
-                                        else
-                                            Toast.makeText(getContext(),
-                                                    "Offered ride successfully!", Toast.LENGTH_SHORT).show();
+                                        TastyToast.makeText(getContext(),
+                                            response.getString("message"), TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
                                         UserSettings.sentRequests.add(userClickedUsername + " - " + userClickedName);
+                                        if (UserSettings.userRideOption.toLowerCase().equals("looking"))
+                                            matchBtn.setText("Cancel request");
+                                        else
+                                            matchBtn.setText("Cancel offer");
 
                                     }else{
-                                        Toast.makeText(getContext(),
-                                                "Error! Something went wrong!", Toast.LENGTH_SHORT).show();
+                                        TastyToast.makeText(getContext(),
+                                                response.getString("message"), TastyToast.LENGTH_SHORT, TastyToast.ERROR);
 
                                     }
                                 } catch (JSONException e) {
@@ -180,8 +184,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             @Override
                             public void onErrorResponse(VolleyError error) {
 
-                                Toast.makeText(getContext(),
-                                        "Something went wrong updating the record!", Toast.LENGTH_SHORT).show();
+                                TastyToast.makeText(getContext(),
+                                        "Something went wrong updating the record!", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
 
                             }
                         });

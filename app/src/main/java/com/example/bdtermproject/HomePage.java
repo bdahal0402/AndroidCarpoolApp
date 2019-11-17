@@ -109,6 +109,7 @@ public class HomePage extends FragmentActivity {
         userLocation.clear();
         userDestination.clear();
         userFullName.clear();
+        userUsername.clear();
 
         StringRequest stringRequest = new StringRequest(dataUrl, new Response.Listener<String>() {
             @Override
