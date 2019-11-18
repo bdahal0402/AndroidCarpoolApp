@@ -212,7 +212,52 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
 
                 if (alreadyMatched){
+                    String userDetailsURL = "http://136.32.51.159/carpool/unmatch.php";
+                    final JSONObject request = new JSONObject();
+                    try {
+                        request.put("user1", Login.loggedInUser);
+                        request.put("user2", userClickedUsername);
+                        request.put("user1Full", Login.loggedInUserFullName);
+                        request.put("user2Full", userClickedName);
 
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JsonObjectRequest jsArrayRequest = new JsonObjectRequest
+                            (Request.Method.POST, userDetailsURL, request, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        if (response.getInt("status") == 0) {
+                                            TastyToast.makeText(getContext(),
+                                                    "Successfully removed the user from trips.", TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
+                                            UserSettings.matches.remove(userClickedUsername + " - " + userClickedName);
+                                            alreadyRequested = false;
+                                            receivedRequest = false;
+                                            alreadyMatched = false;
+                                        }else{
+                                            TastyToast.makeText(getContext(),
+                                                    response.getString("message"), TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                    TastyToast.makeText(getContext(),
+                                            "Something went wrong updating the record!", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+
+                                }
+                            });
+                    RequestCall.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+                    return;
                 }
 
                 if (receivedRequest){

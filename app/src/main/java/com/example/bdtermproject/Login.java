@@ -26,6 +26,7 @@ public class Login extends AppCompatActivity {
 
     public static String loggedInUser;
     public static String loggedInUserFullName;
+    public static String refreshKey;
 
     public static String  signUpSuccess;
     private static final String KEY_STATUS = "status";
@@ -80,6 +81,7 @@ public class Login extends AppCompatActivity {
 
     private void loadDashboard() {
         loggedInUser = username;
+        refreshKey = password;
         Intent i = new Intent(getApplicationContext(), HomePage.class);
         startActivity(i);
         finish();
