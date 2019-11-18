@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/gearLogo">
+        <Button
+            android:id="@+id/userSettingBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/gear" />
+        <Button
+            android:id="@+id/refreshBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/userSettingBtn"
+            android:background="@drawable/baseline_refresh_black_18dp" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home Page"
+            android:id="@+id/homePage"
+            android:layout_toRightOf="@+id/refreshBtn"
+            android:textColor="@color/blue_primary_dark"
+            android:background="@drawable/button_round2"
+            android:layout_marginLeft="20dp" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Reviews"
+            android:id="@+id/myreviews"
+            android:layout_toRightOf="@+id/refreshBtn"
+            android:layout_below="@+id/homePage"
+            android:textColor="@color/blue_primary_dark"
+            android:background="@drawable/button_round2"
+            android:layout_marginLeft="20dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/carLogo"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:src="@drawable/carpool"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:layout_width="200dp"
+            android:layout_height="fill_parent"
+            android:id="@+id/matchedUserList"
+            >
+
+        </FrameLayout>
+        <FrameLayout
+            android:layout_toRightOf="@+id/usersList"
+            android:layout_width="800dp"
+            android:layout_height="fill_parent"
+            android:id="@+id/userProfileView"
+            />
+    </RelativeLayout>
+</LinearLayout>

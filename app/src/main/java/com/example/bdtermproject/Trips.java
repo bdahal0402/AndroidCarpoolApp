@@ -10,6 +10,8 @@ import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 public class Trips extends FragmentActivity {
     @Override
@@ -27,6 +29,20 @@ public class Trips extends FragmentActivity {
                 finish();
             }
         });
+
+        setList();
+
+
+    }
+
+    public void setList(){
+
+
+        MatchedList matchedList = new MatchedList();
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.matchedUserList, matchedList);
+        transaction.commit();
 
 
     }

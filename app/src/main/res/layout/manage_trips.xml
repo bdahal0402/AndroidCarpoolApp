@@ -24,15 +24,14 @@
         android:text="Home Page"
         android:id="@+id/homePage"
         android:layout_toRightOf="@+id/refreshBtn"
-        android:layout_below="@+id/logoutButton"
         android:textColor="@color/blue_primary_dark"
         android:background="@drawable/button_round2"
         android:layout_marginLeft="20dp" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Requests"
-        android:id="@+id/matchedUsers"
+        android:text="My Reviews"
+        android:id="@+id/myreviews"
         android:layout_toRightOf="@+id/refreshBtn"
         android:layout_below="@+id/homePage"
         android:textColor="@color/blue_primary_dark"
