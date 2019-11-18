@@ -47,6 +47,8 @@ public class UserSettings extends FragmentActivity {
     public static ArrayList<String> sentRequests = new ArrayList<>();
     public static ArrayList<String> matches = new ArrayList<>();
 
+    public static boolean cancelClicked;
+
     PlacesClient placesClient;
 
     @Override
@@ -56,7 +58,6 @@ public class UserSettings extends FragmentActivity {
 
         final Button activityButton = findViewById(R.id.activityStatus);
         final Button rideButton = findViewById(R.id.rideOption);
-        final Button cancelButton = findViewById(R.id.cancelUpdate);
         final Button updateButton = findViewById(R.id.updateUserInfo);
         final EditText startAddress = findViewById(R.id.startAddress);
         final EditText destination = findViewById(R.id.destination);
@@ -193,18 +194,13 @@ public class UserSettings extends FragmentActivity {
                             }
                         });
                 RequestCall.getInstance(getApplicationContext()).addToRequestQueue(jsArrayRequest);
-
-            }
-        });
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), HomePage.class);
                 startActivity(i);
                 finish();
             }
         });
+
+
     }
 
     void adjustRideButton(){

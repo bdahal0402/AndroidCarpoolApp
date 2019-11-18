@@ -66,10 +66,13 @@ public class HomePage extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page);
         context = this;
+
+
         Button settings = findViewById(R.id.userSettingBtn);
-        Button refresh = findViewById(R.id.refreshBtn);
+        final Button refresh = findViewById(R.id.refreshBtn);
         Button logout = findViewById(R.id.logoutButton);
         Button trips = findViewById(R.id.matchedUsers);
+
 
         trips.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,127 +111,126 @@ public class HomePage extends FragmentActivity {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                displayLoader();
-                JSONObject request = new JSONObject();
-                try {
-                    request.put("Username", Login.loggedInUser);
-                    request.put("Password", Login.refreshKey);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JsonObjectRequest jsArrayRequest = new JsonObjectRequest
-                        (Request.Method.POST, "http://136.32.51.159/carpool/login.php", request, new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                pDialog.dismiss();
-                                try {
-                                    if (response.getInt("status") == 0) {
-                                        UserSettings.matches.clear();
-                                        UserSettings.requests.clear();
-                                        UserSettings.sentRequests.clear();
-                                        userData.clear();
-                                        userDestination.clear();
-                                        userLocation.clear();
-                                        userDestination.clear();
-                                        userFullName.clear();
-                                        userUsername.clear();
-
-                                        UserSettings.userRideOption = response.getString("rideOption");
-                                        UserSettings.userActivityStatus = response.getString("activityStatus");
-                                        UserSettings.userStartAddress = response.getString("address");
-                                        UserSettings.userDestination = response.getString("destination");
-                                        UserSettings.addressLatitude = response.getString("startLat");
-                                        UserSettings.addressLongitude = response.getString("startLong");
-                                        UserSettings.destLatitude = response.getString("destLat");
-                                        UserSettings.destLongitude = response.getString("destLong");
-                                        String userRequests = response.getString("requestReceived");
-                                        String userMatches = response.getString("matches");
-                                        String userSentRequests = response.getString("requestSent");
-                                        Login.loggedInUserFullName = response.getString("FullName");
-
-                                        if (userRequests.contains("user")) {
-                                            if (userRequests.endsWith(",")) {
-                                                userRequests = Login.removeLastChar(userRequests);
-                                                userRequests += "]";
-                                            }
-
-                                            try {
-                                                JSONArray json = new JSONArray(userRequests);
-                                                for (int i = 0; i < json.length(); i++) {
-                                                    JSONObject e = new JSONObject(json.getJSONObject(i).toString());
-                                                    UserSettings.requests.add(e.getString("user")+ " - " + e.getString("fullname"));
-                                                }
-                                            } catch (JSONException E) {
-                                                E.printStackTrace();
-                                            }
-                                        }
-
-                                        if (userMatches.contains("user")) {
-                                            if (userMatches.endsWith(",")) {
-                                                userMatches = Login.removeLastChar(userMatches);
-                                                userMatches += "]";
-                                            }
-
-                                            try {
-                                                JSONArray json = new JSONArray(userMatches);
-                                                for (int i = 0; i < json.length(); i++) {
-                                                    JSONObject e = new JSONObject(json.getJSONObject(i).toString());
-                                                    UserSettings.matches.add(e.getString("user")+ " - " + e.getString("fullname"));
-                                                }
-                                            } catch (JSONException E) {
-                                                E.printStackTrace();
-                                            }
-                                        }
-
-                                        if (userSentRequests.contains("user")) {
-                                            if (userSentRequests.endsWith(",")) {
-                                                userSentRequests = Login.removeLastChar(userSentRequests);
-                                                userSentRequests += "]";
-                                            }
-
-                                            try {
-                                                JSONArray json = new JSONArray(userSentRequests);
-                                                for (int i = 0; i < json.length(); i++) {
-                                                    JSONObject e = new JSONObject(json.getJSONObject(i).toString());
-                                                    UserSettings.sentRequests.add(e.getString("user")+ " - " + e.getString("fullname"));
-                                                }
-                                            } catch (JSONException E) {
-                                                E.printStackTrace();
-                                            }
-                                        }
-
-                                    }else{
-                                        Toast.makeText(getApplicationContext(),
-                                                "Error refreshing!", Toast.LENGTH_SHORT).show();
-
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                pDialog.dismiss();
-
-                                Toast.makeText(getApplicationContext(),
-                                        "Error refreshing!", Toast.LENGTH_SHORT).show();
-
-                            }
-                        });
-
-                RequestCall.getInstance(getApplicationContext()).addToRequestQueue(jsArrayRequest);
-
-
-                updateList();
+                refreshClick();
             }
         });
 
         updateList();
 
 
+    }
+
+    public void refreshClick(){
+        displayLoader();
+        JSONObject request = new JSONObject();
+        try {
+            request.put("Username", Login.loggedInUser);
+            request.put("Password", Login.refreshKey);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsArrayRequest = new JsonObjectRequest
+                (Request.Method.POST, "http://136.32.51.159/carpool/login.php", request, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        pDialog.dismiss();
+                        try {
+                            if (response.getInt("status") == 0) {
+                                UserSettings.matches.clear();
+                                UserSettings.requests.clear();
+                                UserSettings.sentRequests.clear();
+
+
+                                UserSettings.userRideOption = response.getString("rideOption");
+                                UserSettings.userActivityStatus = response.getString("activityStatus");
+                                UserSettings.userStartAddress = response.getString("address");
+                                UserSettings.userDestination = response.getString("destination");
+                                UserSettings.addressLatitude = response.getString("startLat");
+                                UserSettings.addressLongitude = response.getString("startLong");
+                                UserSettings.destLatitude = response.getString("destLat");
+                                UserSettings.destLongitude = response.getString("destLong");
+                                String userRequests = response.getString("requestReceived");
+                                String userMatches = response.getString("matches");
+                                String userSentRequests = response.getString("requestSent");
+                                Login.loggedInUserFullName = response.getString("FullName");
+
+                                if (userRequests.contains("user")) {
+                                    if (userRequests.endsWith(",")) {
+                                        userRequests = Login.removeLastChar(userRequests);
+                                        userRequests += "]";
+                                    }
+
+                                    try {
+                                        JSONArray json = new JSONArray(userRequests);
+                                        for (int i = 0; i < json.length(); i++) {
+                                            JSONObject e = new JSONObject(json.getJSONObject(i).toString());
+                                            UserSettings.requests.add(e.getString("user")+ " - " + e.getString("fullname"));
+                                        }
+                                    } catch (JSONException E) {
+                                        E.printStackTrace();
+                                    }
+                                }
+
+                                if (userMatches.contains("user")) {
+                                    if (userMatches.endsWith(",")) {
+                                        userMatches = Login.removeLastChar(userMatches);
+                                        userMatches += "]";
+                                    }
+
+                                    try {
+                                        JSONArray json = new JSONArray(userMatches);
+                                        for (int i = 0; i < json.length(); i++) {
+                                            JSONObject e = new JSONObject(json.getJSONObject(i).toString());
+                                            UserSettings.matches.add(e.getString("user")+ " - " + e.getString("fullname"));
+                                        }
+                                    } catch (JSONException E) {
+                                        E.printStackTrace();
+                                    }
+                                }
+
+                                if (userSentRequests.contains("user")) {
+                                    if (userSentRequests.endsWith(",")) {
+                                        userSentRequests = Login.removeLastChar(userSentRequests);
+                                        userSentRequests += "]";
+                                    }
+
+                                    try {
+                                        JSONArray json = new JSONArray(userSentRequests);
+                                        for (int i = 0; i < json.length(); i++) {
+                                            JSONObject e = new JSONObject(json.getJSONObject(i).toString());
+                                            UserSettings.sentRequests.add(e.getString("user")+ " - " + e.getString("fullname"));
+                                        }
+                                    } catch (JSONException E) {
+                                        E.printStackTrace();
+                                    }
+                                }
+
+                            }else{
+                                Toast.makeText(getApplicationContext(),
+                                        "Error refreshing!", Toast.LENGTH_SHORT).show();
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        pDialog.dismiss();
+
+                        Toast.makeText(getApplicationContext(),
+                                "Error refreshing!", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+        RequestCall.getInstance(getApplicationContext()).addToRequestQueue(jsArrayRequest);
+
+
+        updateList();
     }
 
     void updateList(){

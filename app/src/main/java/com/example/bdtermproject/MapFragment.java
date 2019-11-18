@@ -49,6 +49,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public static boolean alreadyMatched;
     public static boolean receivedRequest;
 
+    public static boolean needsRefresh;
 
 
 

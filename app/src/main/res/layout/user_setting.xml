@@ -183,19 +183,6 @@
         android:id="@+id/updateUserInfo"
         android:layout_marginTop="150dp"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_login_two"
-        android:text="Home"
-        android:textColor="#000000"
-        android:textAllCaps="false"
-        android:textStyle="normal"
-        android:textSize="18sp"
-        android:padding="16dp"
-        android:clickable="true"
-        android:id="@+id/cancelUpdate"
-        android:layout_marginTop="5dp"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

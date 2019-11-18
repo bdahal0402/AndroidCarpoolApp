@@ -49,12 +49,13 @@ public class UserList extends Fragment  {
                 MapFragment.userClickedDestLatLng = HomePage.userDestinationLatLng.get(position);
                 MapFragment.userClickedUsername = HomePage.userUsername.get(position);
 
-                HomePage.userFullName.clear();
-                HomePage.userLocation.clear();
-                HomePage.userDestination.clear();
-                HomePage.userAddressLatLng.clear();
-                HomePage.userDestinationLatLng.clear();
-
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    HomePage.userFullName.clear();
+                    HomePage.userLocation.clear();
+                    HomePage.userDestination.clear();
+                    HomePage.userAddressLatLng.clear();
+                    HomePage.userDestinationLatLng.clear();
+                }
 
                 if (HomePage.userRideOption.get(position).toLowerCase().equals("offering"))
                     MapFragment.userClickedDescription = "Offering - Destination";
@@ -66,6 +67,7 @@ public class UserList extends Fragment  {
                 else
                     transaction.replace(R.id.usersList, mapFragment);
                 transaction.commit();
+
 
 
 
