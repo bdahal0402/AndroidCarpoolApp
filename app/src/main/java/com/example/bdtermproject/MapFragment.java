@@ -1,5 +1,7 @@
 package com.example.bdtermproject;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -44,6 +46,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public static LatLng userClickedDestLatLng;
 
     public static boolean alreadyRequested;
+    public static boolean alreadyMatched;
+    public static boolean receivedRequest;
+
+
+
 
     public MapFragment(){}
 
@@ -118,7 +125,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         alreadyRequested = false;
         for (int i =0; i< UserSettings.sentRequests.size(); i++){
-            if (UserSettings.requests.get(i).contains(userClickedUsername)) {
+            if (UserSettings.sentRequests.get(i).contains(userClickedUsername)) {
                 alreadyRequested = true;
                 if (UserSettings.userRideOption.toLowerCase().equals("looking"))
                     matchBtn.setText("Cancel request");
@@ -127,24 +134,261 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         }
 
+        alreadyMatched = false;
+        for (int i =0; i< UserSettings.matches.size(); i++){
+            if (UserSettings.matches.get(i).contains(userClickedUsername)) {
+                alreadyMatched = true;
+                matchBtn.setText("Remove user from trips");
+            }
+        }
+
+        receivedRequest = false;
+        for (int i =0; i< UserSettings.requests.size(); i++){
+            if (UserSettings.requests.get(i).contains(userClickedUsername)) {
+                receivedRequest = true;
+                if (UserSettings.userRideOption.toLowerCase().equals("looking"))
+                    matchBtn.setText("Accept/deny ride offer");
+                else
+                    matchBtn.setText("Accept/deny ride request");
+            }
+        }
+
         matchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userDetailsURL = "http://136.32.51.159/carpool/sendRequest.php";
-
 
 
 
                 if(alreadyRequested){
+                    String userDetailsURL = "http://136.32.51.159/carpool/cancelRequest.php";
+                    final JSONObject request = new JSONObject();
+                    try {
+                        request.put("user1", Login.loggedInUser);
+                        request.put("user2", userClickedUsername);
+                        request.put("user1Full", Login.loggedInUserFullName);
+                        request.put("user2Full", userClickedName);
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JsonObjectRequest jsArrayRequest = new JsonObjectRequest
+                            (Request.Method.POST, userDetailsURL, request, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        if (response.getInt("status") == 0) {
+                                            TastyToast.makeText(getContext(),
+                                                    "Successfully removed the request.", TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
+                                            UserSettings.sentRequests.remove(userClickedUsername + " - " + userClickedName);
+                                            if (UserSettings.userRideOption.toLowerCase().equals("looking"))
+                                                matchBtn.setText("Request ride");
+                                            else
+                                                matchBtn.setText("Offer ride");
+                                            alreadyRequested = false;
+
+                                        }else{
+                                            TastyToast.makeText(getContext(),
+                                                    response.getString("message"), TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                    TastyToast.makeText(getContext(),
+                                            "Something went wrong updating the record!", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+
+                                }
+                            });
+                    RequestCall.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+                    return;
+                }
+
+                if (alreadyMatched){
 
                 }
 
+                if (receivedRequest){
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                    builder1.setMessage("Do you want to accept or deny the request?");
+                    builder1.setCancelable(false);
+
+                    builder1.setPositiveButton(
+                            "Accept",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    String removeDetailURL = "http://136.32.51.159/carpool/denyRequest.php";
+                                    final JSONObject request2 = new JSONObject();
+                                    try {
+                                        request2.put("user1", Login.loggedInUser);
+                                        request2.put("user2", userClickedUsername);
+                                        request2.put("user1Full", Login.loggedInUserFullName);
+                                        request2.put("user2Full", userClickedName);
+
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    JsonObjectRequest jsArrayRequest2 = new JsonObjectRequest
+                                            (Request.Method.POST, removeDetailURL, request2, new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
+                                                    try {
+                                                        if (response.getInt("status") == 0) {
+                                                            UserSettings.requests.remove(userClickedUsername + " - " + userClickedName);
+
+                                                        } else {
+                                                            TastyToast.makeText(getContext(),
+                                                                    response.getString("message"), TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+
+                                                        }
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            }, new Response.ErrorListener() {
+
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+
+                                                    TastyToast.makeText(getContext(),
+                                                            "Something went wrong updating the record!", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+
+                                                }
+                                            });
+                                    RequestCall.getInstance(getContext()).addToRequestQueue(jsArrayRequest2);
+
+
+                                    String userDetailsURL = "http://136.32.51.159/carpool/matchUsers.php";
+                                    final JSONObject request = new JSONObject();
+                                    try {
+                                        request.put("user1", Login.loggedInUser);
+                                        request.put("user2", userClickedUsername);
+                                        request.put("user1Full", Login.loggedInUserFullName);
+                                        request.put("user2Full", userClickedName);
+
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    JsonObjectRequest jsArrayRequest = new JsonObjectRequest
+                                            (Request.Method.POST, userDetailsURL, request, new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
+                                                    try {
+                                                        if (response.getInt("status") == 0) {
+                                                            TastyToast.makeText(getContext(),
+                                                                    response.getString("message"), TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
+                                                            UserSettings.sentRequests.remove(userClickedUsername + " - " + userClickedName);
+                                                            UserSettings.matches.add(userClickedUsername + " - " + userClickedName);
+                                                            matchBtn.setText("Remove from trips");
+
+                                                            alreadyRequested = false;
+                                                            receivedRequest = false;
+                                                            alreadyMatched = true;
+
+                                                        } else {
+                                                            TastyToast.makeText(getContext(),
+                                                                    response.getString("message"), TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+
+                                                        }
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            }, new Response.ErrorListener() {
+
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+
+                                                    TastyToast.makeText(getContext(),
+                                                            "Something went wrong updating the record!", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+
+                                                }
+                                            });
+                                    RequestCall.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+                                    dialog.cancel();
+                                }
+                            });
+
+                    builder1.setNegativeButton(
+                            "Deny",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    String userDetailsURL = "http://136.32.51.159/carpool/denyRequest.php";
+                                    final JSONObject request = new JSONObject();
+                                    try {
+                                        request.put("user1", Login.loggedInUser);
+                                        request.put("user2", userClickedUsername);
+                                        request.put("user1Full", Login.loggedInUserFullName);
+                                        request.put("user2Full", userClickedName);
+
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    JsonObjectRequest jsArrayRequest = new JsonObjectRequest
+                                            (Request.Method.POST, userDetailsURL, request, new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
+                                                    try {
+                                                        if (response.getInt("status") == 0) {
+                                                            TastyToast.makeText(getContext(),
+                                                                    "Successfully removed the request.", TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
+                                                            UserSettings.requests.remove(userClickedUsername + " - " + userClickedName);
+                                                            if (UserSettings.userRideOption.toLowerCase().equals("looking"))
+                                                                matchBtn.setText("Request ride");
+                                                            else
+                                                                matchBtn.setText("Offer ride");
+                                                            alreadyRequested = false;
+                                                            receivedRequest = false;
+                                                            alreadyMatched = false;
+
+                                                        } else {
+                                                            TastyToast.makeText(getContext(),
+                                                                    response.getString("message"), TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+
+                                                        }
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            }, new Response.ErrorListener() {
+
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+
+                                                    TastyToast.makeText(getContext(),
+                                                            "Something went wrong updating the record!", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+
+                                                }
+                                            });
+                                    RequestCall.getInstance(getContext()).addToRequestQueue(jsArrayRequest);
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+
+                    return;
+                }
+
+
+                String userDetailsURL = "http://136.32.51.159/carpool/sendRequest.php";
                 if(UserSettings.userActivityStatus.toLowerCase().equals("inactive")){
                     TastyToast.makeText(getContext(), "You must set your activity status to active first.", TastyToast.LENGTH_SHORT, TastyToast.CONFUSING);
                     return;
                 }
 
-                JSONObject request = new JSONObject();
+                final JSONObject request = new JSONObject();
                 try {
                     request.put("user1", Login.loggedInUser);
                     request.put("user2", userClickedUsername);
@@ -169,6 +413,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                             matchBtn.setText("Cancel request");
                                         else
                                             matchBtn.setText("Cancel offer");
+                                        alreadyRequested = true;
 
                                     }else{
                                         TastyToast.makeText(getContext(),
