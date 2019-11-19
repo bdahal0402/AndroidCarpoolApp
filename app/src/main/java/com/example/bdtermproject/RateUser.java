@@ -145,14 +145,24 @@ public class RateUser extends Fragment {
                     ratingText.requestFocus();
                     return;
                 }
+                double totalRatingValue = starValue;
+                if (MatchedList.allRatingValues.size() != 0) {
+                    for (int i=0; i<MatchedList.allRatingValues.size(); i++){
+                        totalRatingValue += MatchedList.allRatingValues.get(i);
+                    }
+                }
 
-
+                double divideValue = 1;
+                if (MatchedList.allRatingValues.size() > 0)
+                    divideValue = MatchedList.allRatingValues.size()+1;
+                String averageRating = String.valueOf((totalRatingValue/divideValue));
                 JSONObject request = new JSONObject();
                 try {
                     request.put("username", Login.loggedInUser);
                     request.put("user", MatchedList.matchClickedUsername);
                     request.put("stars", starValue);
                     request.put("message", ratingMessage);
+                    request.put("averageRating", averageRating);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

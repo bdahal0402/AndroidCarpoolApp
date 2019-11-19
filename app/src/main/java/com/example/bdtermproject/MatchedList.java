@@ -28,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class MatchedList extends Fragment  {
@@ -41,6 +42,7 @@ public class MatchedList extends Fragment  {
     public static ArrayList<String> matchClickRatings = new ArrayList<>();
     public static ArrayList<String> matchClickRatedUsers = new ArrayList<>();
     public static String matchClickedUsername;
+    public static ArrayList<Integer> allRatingValues = new ArrayList<>();
 
 
 
@@ -121,6 +123,7 @@ public class MatchedList extends Fragment  {
                                                 JSONObject val = new JSONObject(json.getJSONObject(i).toString());
                                                 matchClickRatings.add("Rating: " + val.getString("stars") + "/5 \n" + "Review: " + val.getString("rating_message"));
                                                 matchClickRatedUsers.add(val.getString("user"));
+                                                allRatingValues.add(Integer.parseInt(val.getString("stars")));
                                             }
 
 
