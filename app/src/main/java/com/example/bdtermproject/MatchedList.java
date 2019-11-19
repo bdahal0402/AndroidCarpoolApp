@@ -40,6 +40,8 @@ public class MatchedList extends Fragment  {
     public static String matchClickedDetails;
     public static ArrayList<String> matchClickRatings = new ArrayList<>();
     public static ArrayList<String> matchClickRatedUsers = new ArrayList<>();
+    public static String matchClickedUsername;
+
 
 
     @Override
@@ -66,8 +68,11 @@ public class MatchedList extends Fragment  {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                String[] splitNames = UserSettings.matches.get(position).split(" - ");
-                String profileUsername = splitNames[0];
+                MatchedList.matchClickRatedUsers.clear();
+                MatchedList.matchClickRatings.clear();
+
+                final String[] splitNames = UserSettings.matches.get(position).split(" - ");
+                final String profileUsername = splitNames[0];
 
                 JSONObject request = new JSONObject();
                 try {
@@ -84,23 +89,24 @@ public class MatchedList extends Fragment  {
                                 try {
                                     matchedClickedFullName = e.getString("FullName");
                                     matchedClickedRideOption = e.getString("UseStatus");
+                                    matchClickedUsername = profileUsername;
                                     String email = e.getString("Email");
                                     String activity = e.getString("Status");
                                     String location = e.getString("Location");
                                     String destination = e.getString("Destination");
                                     if (matchedClickedRideOption.toLowerCase().equals("looking")){
                                         if (activity.toLowerCase().equals("active"))
-                                            matchClickedDetails = "Email Address: " + email.trim() +"\nActivity Status: " + activity +
-                                                    "\nRide Option: Looking for a ride\nPickup Location: " + location + "\nDestination: " + destination + "\n";
+                                            matchClickedDetails = "Email Address: " + email.trim() +"\nActivity Status: " + activity.toUpperCase() +
+                                                    "\nRide Option: LOOKING\nPickup Location: " + location + "\nDestination: " + destination + "\n";
                                         else
-                                            matchClickedDetails = "Email Address: " + email.trim() +"\nActivity Status: " + activity + "\n";
+                                            matchClickedDetails = "Email Address: " + email.trim() +"\nActivity Status: " + activity.toUpperCase() + "\n";
                                     }
                                     if (matchedClickedRideOption.toLowerCase().equals("offering")){
                                         if (activity.toLowerCase().equals("active"))
-                                            matchClickedDetails = "Email Address: " + email.trim() +"\nActivity Status: " + activity +
-                                                    "\nRide Option: Offering a ride\nDestination: " + destination + "\n";
+                                            matchClickedDetails = "Email Address: " + email.trim() +"\nActivity Status: " + activity.toUpperCase() +
+                                                    "\nRide Option: OFFERING\nDestination: " + destination + "\n";
                                         else
-                                            matchClickedDetails = "Email Address: " + email.trim() +"\nActivity Status: " + activity + "\n";
+                                            matchClickedDetails = "Email Address: " + email.trim() +"\nActivity Status: " + activity.toUpperCase() + "\n";
                                     }
                                     String reviews = e.getString("ratings");
                                     if (reviews.contains("user")) {
@@ -116,13 +122,17 @@ public class MatchedList extends Fragment  {
                                                 matchClickRatings.add("Rating: " + val.getString("stars") + "/5 \n" + "Review: " + val.getString("rating_message"));
                                                 matchClickRatedUsers.add(val.getString("user"));
                                             }
+
+
                                         } catch (JSONException E) {
                                             E.printStackTrace();
                                         }
                                     }
                                     else{
-                                        matchClickRatings.add("This user doesn't have any ratings.");
+                                        matchClickRatings.add("This user doesn't have any reviews.");
                                     }
+                                    Trips.viewingSelfProfile = false;
+                                    setList();
 
                                 } catch (Exception ex) {
                                     ex.printStackTrace();
@@ -141,6 +151,17 @@ public class MatchedList extends Fragment  {
         });
 
         return v;
+    }
+
+    public void setList(){
+        UserProfile userProfile = new UserProfile();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            transaction.replace(R.id.userProfileView, userProfile);
+        else
+            transaction.replace(R.id.matchedUserList, userProfile);
+        transaction.commit();
     }
 
 

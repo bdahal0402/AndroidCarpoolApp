@@ -238,6 +238,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                             alreadyRequested = false;
                                             receivedRequest = false;
                                             alreadyMatched = false;
+                                            if (UserSettings.userRideOption.toLowerCase().equals("looking"))
+                                                matchBtn.setText("Request ride");
+                                            else
+                                                matchBtn.setText("Offer ride");
                                         }else{
                                             TastyToast.makeText(getContext(),
                                                     response.getString("message"), TastyToast.LENGTH_SHORT, TastyToast.ERROR);

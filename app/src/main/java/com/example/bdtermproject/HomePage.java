@@ -303,15 +303,11 @@ public class HomePage extends FragmentActivity {
     }
 
     public void setList(){
-
-
         UserList userListFragment = new UserList();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.usersList, userListFragment);
         transaction.commit();
-
-
     }
 
 

@@ -63,7 +63,7 @@
 
         </FrameLayout>
         <FrameLayout
-            android:layout_toRightOf="@+id/usersList"
+            android:layout_toRightOf="@+id/matchedUserList"
             android:layout_width="800dp"
             android:layout_height="fill_parent"
             android:id="@+id/userProfileView"
