@@ -261,11 +261,13 @@ public class HomePage extends FragmentActivity {
                         String destination = e.getString("Destination");
                         String rideOption = e.getString("UseStatus").toLowerCase();
                         String averageRating = e.getString("AverageRating");
+                        if (!averageRating.toLowerCase().contains("no"))
+                            averageRating = String.format("%.2f", Double.parseDouble(e.getString("AverageRating")));
                         LatLng addressLatLng = new LatLng(Double.parseDouble(e.getString("AddressLatitude")), Double.parseDouble(e.getString("AddressLongitude")));
                         LatLng userDestLatLng = new LatLng(Double.parseDouble(e.getString("DestLatitude")), Double.parseDouble(e.getString("DestLongitude")));
                         String usn = e.getString("Username");
                         if (averageRating.length() < 5)
-                            averageRating += "/5.0";
+                            averageRating += "/5.00";
                         if (rideOption.equals("looking"))
                             userData.add(fullname + " - Looking for a ride\nAverage rating: " + averageRating + "\nPickup: " + address + "\nDestination: " + destination);
                         if (rideOption.equals("offering"))
