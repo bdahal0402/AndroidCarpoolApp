@@ -30,16 +30,42 @@
         android:layout_height="1dp"
         android:background="#000000"
         />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="Details"
-        android:layout_gravity="center"
-        android:textColor="@color/black"
-        android:textSize="30dp"
-        android:fontFamily="@font/lemon_jelly">
-    </TextView>
+
+
+           <LinearLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_gravity="center"
+               android:layout_marginTop="15dp"
+               android:layout_marginBottom="5dp">
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginRight="90dp"
+                   ></TextView>
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/detailsLabel"
+                   android:text="Details"
+                   android:layout_gravity="center"
+                   android:textColor="@color/black"
+                   android:textSize="30dp"
+                   android:fontFamily="@font/lemon_jelly">
+
+               </TextView>
+               <Button
+                   android:layout_marginLeft="50dp"
+                   android:id="@+id/send_email"
+                   android:layout_width="30dp"
+                   android:layout_height="30dp"
+                   android:background="@drawable/ic_mail_24dp"
+
+                   />
+           </LinearLayout>
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -39,6 +39,7 @@ public class MatchedList extends Fragment  {
     public static String matchedClickedFullName;
     public static String matchedClickedRideOption;
     public static String matchClickedDetails;
+    public static String matchClickedEmail;
     public static ArrayList<String> matchClickRatings = new ArrayList<>();
     public static ArrayList<String> matchClickRatedUsers = new ArrayList<>();
     public static String matchClickedUsername;
@@ -93,6 +94,7 @@ public class MatchedList extends Fragment  {
                                     matchedClickedRideOption = e.getString("UseStatus");
                                     matchClickedUsername = profileUsername;
                                     String email = e.getString("Email");
+                                    matchClickedEmail = email;
                                     String activity = e.getString("Status");
                                     String location = e.getString("Location");
                                     String destination = e.getString("Destination");

@@ -2,29 +2,23 @@ package com.example.bdtermproject;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
-import android.service.autofill.FieldClassification;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.view.ViewGroup.LayoutParams;
+import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.sdsmdg.tastytoast.TastyToast;
-
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
 public class UserProfile extends Fragment {
@@ -58,6 +52,22 @@ public class UserProfile extends Fragment {
 
 
         Button addRating = mView.findViewById(R.id.addReview);
+        Button sendEmail = mView.findViewById(R.id.send_email);
+
+        sendEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{MatchedList.matchClickedEmail});
+                i.putExtra(Intent.EXTRA_SUBJECT, "Carpool app");
+                try {
+                    startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(getContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         addRating.setOnClickListener(new View.OnClickListener() {
             @Override
