@@ -48,6 +48,8 @@ public class UserSettings extends FragmentActivity {
     public static ArrayList<String> matches = new ArrayList<>();
 
     public static boolean cancelClicked;
+    final String USER_DETAILS_URL =  "https://coolendpointthatworks.com/carpool/userDetails";
+
 
     PlacesClient placesClient;
 
@@ -147,7 +149,6 @@ public class UserSettings extends FragmentActivity {
             public void onClick(View v) {
 
 
-                String userDetailsURL = "http://136.32.51.159/carpool/updateDetails.php";
 
                 JSONObject request = new JSONObject();
                 try {
@@ -165,7 +166,7 @@ public class UserSettings extends FragmentActivity {
                     e.printStackTrace();
                 }
                 JsonObjectRequest jsArrayRequest = new JsonObjectRequest
-                        (Request.Method.POST, userDetailsURL, request, new Response.Listener<JSONObject>() {
+                        (Request.Method.POST, USER_DETAILS_URL, request, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
@@ -237,7 +238,6 @@ public class UserSettings extends FragmentActivity {
 
 
     public static void getUserDetails(String username, Context context) {
-        String userDetailsURL = "http://136.32.51.159/carpool/userDetails.php";
 
         JSONObject request = new JSONObject();
         try {
@@ -248,7 +248,7 @@ public class UserSettings extends FragmentActivity {
             e.printStackTrace();
         }
         JsonObjectRequest jsArrayRequest = new JsonObjectRequest
-                (Request.Method.POST, userDetailsURL, request, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, USER_DETAILS_URL, request, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {

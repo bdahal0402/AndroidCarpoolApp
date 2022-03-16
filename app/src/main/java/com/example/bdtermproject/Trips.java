@@ -28,7 +28,8 @@ import org.json.JSONObject;
 public class Trips extends FragmentActivity {
     ProgressDialog pDialog;
     public static boolean viewingSelfProfile;
-
+    final String LOGIN_URL =  "https://coolendpointthatworks.com/carpool/login";
+    final String FULL_INFO_URL =  "https://coolendpointthatworks.com/carpool/fullInfo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class Trips extends FragmentActivity {
                     e.printStackTrace();
                 }
                 JsonObjectRequest jsArrayRequest = new JsonObjectRequest
-                        (Request.Method.POST, "http://136.32.51.159/carpool/fullinfo.php", request, new Response.Listener<JSONObject>() {
+                        (Request.Method.POST, FULL_INFO_URL, request, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject e) {
 
@@ -137,7 +138,8 @@ public class Trips extends FragmentActivity {
 
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                System.out.print("error");
+                                Toast.makeText(getApplicationContext(),
+                                "Error refreshing!", Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -169,7 +171,7 @@ public class Trips extends FragmentActivity {
             e.printStackTrace();
         }
         JsonObjectRequest jsArrayRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://136.32.51.159/carpool/login.php", request, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, LOGIN_URL, request, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         pDialog.dismiss();
@@ -195,10 +197,6 @@ public class Trips extends FragmentActivity {
                                 Login.loggedInUserFullName = response.getString("FullName");
 
                                 if (userRequests.contains("user")) {
-                                    if (userRequests.endsWith(",")) {
-                                        userRequests = Login.removeLastChar(userRequests);
-                                        userRequests += "]";
-                                    }
 
                                     try {
                                         JSONArray json = new JSONArray(userRequests);
@@ -207,16 +205,13 @@ public class Trips extends FragmentActivity {
                                             UserSettings.requests.add(e.getString("user")+ " - " + e.getString("fullname"));
                                         }
                                     } catch (JSONException E) {
-                                        E.printStackTrace();
+                                        Toast.makeText(getApplicationContext(),
+                                "Error refreshing!", Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
                                 if (userMatches.contains("user")) {
-                                    if (userMatches.endsWith(",")) {
-                                        userMatches = Login.removeLastChar(userMatches);
-                                        userMatches += "]";
-                                    }
-
+      
                                     try {
                                         JSONArray json = new JSONArray(userMatches);
                                         for (int i = 0; i < json.length(); i++) {
@@ -224,15 +219,12 @@ public class Trips extends FragmentActivity {
                                             UserSettings.matches.add(e.getString("user")+ " - " + e.getString("fullname"));
                                         }
                                     } catch (JSONException E) {
-                                        E.printStackTrace();
+                                        Toast.makeText(getApplicationContext(),
+                                "Error refreshing!", Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
                                 if (userSentRequests.contains("user")) {
-                                    if (userSentRequests.endsWith(",")) {
-                                        userSentRequests = Login.removeLastChar(userSentRequests);
-                                        userSentRequests += "]";
-                                    }
 
                                     try {
                                         JSONArray json = new JSONArray(userSentRequests);
@@ -241,7 +233,8 @@ public class Trips extends FragmentActivity {
                                             UserSettings.sentRequests.add(e.getString("user")+ " - " + e.getString("fullname"));
                                         }
                                     } catch (JSONException E) {
-                                        E.printStackTrace();
+                                        Toast.makeText(getApplicationContext(),
+                                "Error refreshing!", Toast.LENGTH_SHORT).show();
                                     }
                                 }
 

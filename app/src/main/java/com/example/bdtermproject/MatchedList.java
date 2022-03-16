@@ -45,7 +45,7 @@ public class MatchedList extends Fragment  {
     public static String matchClickedUsername;
     public static ArrayList<Integer> allRatingValues = new ArrayList<>();
 
-
+    final String GET_FULL_DETAILS_URL =  "https://coolendpointthatworks.com/carpool/getFullDetails";
 
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle savedInstanceState){
@@ -85,7 +85,7 @@ public class MatchedList extends Fragment  {
                     e.printStackTrace();
                 }
                 JsonObjectRequest jsArrayRequest = new JsonObjectRequest
-                        (Request.Method.POST, "http://136.32.51.159/carpool/fullinfo.php", request, new Response.Listener<JSONObject>() {
+                        (Request.Method.POST, GET_FULL_DETAILS_URL, request, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject e) {
 
@@ -114,11 +114,6 @@ public class MatchedList extends Fragment  {
                                     }
                                     String reviews = e.getString("ratings");
                                     if (reviews.contains("user")) {
-                                        if (reviews.endsWith(",")) {
-                                            reviews = Login.removeLastChar(reviews);
-                                            reviews += "]";
-                                        }
-
                                         try {
                                             JSONArray json = new JSONArray(reviews);
                                             for (int i = 0; i < json.length(); i++) {

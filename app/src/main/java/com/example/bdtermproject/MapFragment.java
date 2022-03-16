@@ -52,6 +52,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public static boolean needsRefresh;
 
 
+    final String CANCEL_REQUEST_URL =  "https://coolendpointthatworks.com/carpool/cancelRequest";
+    final String DENY_REQUEST_URL =  "https://coolendpointthatworks.com/carpool/denyRequest";
+    final String ACCEPT_REQUEST_URL =  "https://coolendpointthatworks.com/carpool/acceptRequest";
+    final String UNMATCH_REQUEST_URL =  "https://coolendpointthatworks.com/carpool/unmatchUser";
+    final String MATCH_REQUEST_URL =  "https://coolendpointthatworks.com/carpool/matchUser";
+    final String GET_USER_DETAILS_URL =  "https://coolendpointthatworks.com/carpool/getUsersDetail";
+
+
+
 
     public MapFragment(){}
 
@@ -161,21 +170,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
                 if(alreadyRequested){
-                    String userDetailsURL = "http://136.32.51.159/carpool/cancelRequest.php";
                     final JSONObject request = new JSONObject();
                     try {
                         request.put("user1", Login.loggedInUser);
                         request.put("user2", userClickedUsername);
                         request.put("user1Full", Login.loggedInUserFullName);
                         request.put("user2Full", userClickedName);
-
-
-
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(),
+                                        e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     JsonObjectRequest jsArrayRequest = new JsonObjectRequest
-                            (Request.Method.POST, userDetailsURL, request, new Response.Listener<JSONObject>() {
+                            (Request.Method.POST, CANCEL_REQUEST_URL, request, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
@@ -195,7 +201,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                                         }
                                     } catch (JSONException e) {
-                                        e.printStackTrace();
+                                        Toast.makeText(getApplicationContext(),
+                                        e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }, new Response.ErrorListener() {
@@ -213,7 +220,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
 
                 if (alreadyMatched){
-                    String userDetailsURL = "http://136.32.51.159/carpool/unmatch.php";
                     final JSONObject request = new JSONObject();
                     try {
                         request.put("user1", Login.loggedInUser);
@@ -224,10 +230,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(),
+                                        e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     JsonObjectRequest jsArrayRequest = new JsonObjectRequest
-                            (Request.Method.POST, userDetailsURL, request, new Response.Listener<JSONObject>() {
+                            (Request.Method.POST, UNMATCH_REQUEST_URL, request, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
@@ -248,7 +255,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                                         }
                                     } catch (JSONException e) {
-                                        e.printStackTrace();
+                                        Toast.makeText(getApplicationContext(),
+                                        e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }, new Response.ErrorListener() {
@@ -274,7 +282,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             "Accept",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    String removeDetailURL = "http://136.32.51.159/carpool/denyRequest.php";
                                     final JSONObject request2 = new JSONObject();
                                     try {
                                         request2.put("user1", Login.loggedInUser);
@@ -284,10 +291,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
                                     } catch (JSONException e) {
-                                        e.printStackTrace();
+                                        Toast.makeText(getApplicationContext(),
+                                        e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                     JsonObjectRequest jsArrayRequest2 = new JsonObjectRequest
-                                            (Request.Method.POST, removeDetailURL, request2, new Response.Listener<JSONObject>() {
+                                            (Request.Method.POST, DENY_REQUEST_URL, request2, new Response.Listener<JSONObject>() {
                                                 @Override
                                                 public void onResponse(JSONObject response) {
                                                     try {
@@ -300,7 +308,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                                                         }
                                                     } catch (JSONException e) {
-                                                        e.printStackTrace();
+                                                        Toast.makeText(getApplicationContext(),
+                                                        e.getMessage(), Toast.LENGTH_SHORT).show();
                                                     }
                                                 }
                                             }, new Response.ErrorListener() {
@@ -315,8 +324,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                             });
                                     RequestCall.getInstance(getContext()).addToRequestQueue(jsArrayRequest2);
 
-
-                                    String userDetailsURL = "http://136.32.51.159/carpool/matchUsers.php";
                                     final JSONObject request = new JSONObject();
                                     try {
                                         request.put("user1", Login.loggedInUser);
@@ -326,10 +333,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
                                     } catch (JSONException e) {
-                                        e.printStackTrace();
+                                       Toast.makeText(getApplicationContext(),
+                                        e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                     JsonObjectRequest jsArrayRequest = new JsonObjectRequest
-                                            (Request.Method.POST, userDetailsURL, request, new Response.Listener<JSONObject>() {
+                                            (Request.Method.POST, MATCH_REQUEST_URL, request, new Response.Listener<JSONObject>() {
                                                 @Override
                                                 public void onResponse(JSONObject response) {
                                                     try {
@@ -350,7 +358,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                                                         }
                                                     } catch (JSONException e) {
-                                                        e.printStackTrace();
+                                                        Toast.makeText(getApplicationContext(),
+                                                        e.getMessage(), Toast.LENGTH_SHORT).show();
                                                     }
                                                 }
                                             }, new Response.ErrorListener() {
@@ -372,7 +381,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             "Deny",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    String userDetailsURL = "http://136.32.51.159/carpool/denyRequest.php";
                                     final JSONObject request = new JSONObject();
                                     try {
                                         request.put("user1", Login.loggedInUser);
@@ -382,10 +390,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
                                     } catch (JSONException e) {
-                                        e.printStackTrace();
+                                        Toast.makeText(getApplicationContext(),
+                                        e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                     JsonObjectRequest jsArrayRequest = new JsonObjectRequest
-                                            (Request.Method.POST, userDetailsURL, request, new Response.Listener<JSONObject>() {
+                                            (Request.Method.POST, DENY_REQUEST_URL, request, new Response.Listener<JSONObject>() {
                                                 @Override
                                                 public void onResponse(JSONObject response) {
                                                     try {
@@ -407,7 +416,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                                                         }
                                                     } catch (JSONException e) {
-                                                        e.printStackTrace();
+                                                        Toast.makeText(getApplicationContext(),
+                                                        e.getMessage(), Toast.LENGTH_SHORT).show();
                                                     }
                                                 }
                                             }, new Response.ErrorListener() {
@@ -432,7 +442,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
 
 
-                String userDetailsURL = "http://136.32.51.159/carpool/sendRequest.php";
                 if(UserSettings.userActivityStatus.toLowerCase().equals("inactive")){
                     TastyToast.makeText(getContext(), "You must set your activity status to active first.", TastyToast.LENGTH_SHORT, TastyToast.CONFUSING);
                     return;
@@ -448,10 +457,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),
+                    e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 JsonObjectRequest jsArrayRequest = new JsonObjectRequest
-                        (Request.Method.POST, userDetailsURL, request, new Response.Listener<JSONObject>() {
+                        (Request.Method.POST, GET_USER_DETAILS_URL, request, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
@@ -471,7 +481,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                                     }
                                 } catch (JSONException e) {
-                                    e.printStackTrace();
+                                    Toast.makeText(getApplicationContext(),
+                                        e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }, new Response.ErrorListener() {

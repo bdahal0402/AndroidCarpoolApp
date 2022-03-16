@@ -39,7 +39,8 @@ public class Login extends AppCompatActivity {
     private String username;
     private String password;
     private ProgressDialog pDialog;
-    private String login_url = "http://136.32.51.159/carpool/login.php";
+    
+    final String login_url =  "https://coolendpointthatworks.com/carpool/login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,6 @@ public class Login extends AppCompatActivity {
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
         pDialog.show();
-
     }
 
     private void login() {
@@ -129,11 +129,6 @@ public class Login extends AppCompatActivity {
                                 loggedInUserFullName = response.getString("FullName");
 
                                 if (userRequests.contains("user")) {
-                                    if (userRequests.endsWith(",")) {
-                                        userRequests = removeLastChar(userRequests);
-                                        userRequests += "]";
-                                    }
-
                                     try {
                                         JSONArray json = new JSONArray(userRequests);
                                         for (int i = 0; i < json.length(); i++) {
@@ -141,16 +136,12 @@ public class Login extends AppCompatActivity {
                                             UserSettings.requests.add(e.getString("user")+ " - " + e.getString("fullname"));
                                         }
                                     } catch (JSONException E) {
-                                        E.printStackTrace();
+                                        Toast.makeText(getApplicationContext(),
+                                        E.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
                                 if (userMatches.contains("user")) {
-                                    if (userMatches.endsWith(",")) {
-                                        userMatches = removeLastChar(userMatches);
-                                        userMatches += "]";
-                                    }
-
                                     try {
                                         JSONArray json = new JSONArray(userMatches);
                                         for (int i = 0; i < json.length(); i++) {
@@ -158,16 +149,12 @@ public class Login extends AppCompatActivity {
                                             UserSettings.matches.add(e.getString("user")+ " - " + e.getString("fullname"));
                                         }
                                     } catch (JSONException E) {
-                                        E.printStackTrace();
+                                        Toast.makeText(getApplicationContext(),
+                                        E.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
                                 if (userSentRequests.contains("user")) {
-                                    if (userSentRequests.endsWith(",")) {
-                                        userSentRequests = removeLastChar(userSentRequests);
-                                        userSentRequests += "]";
-                                    }
-
                                     try {
                                         JSONArray json = new JSONArray(userSentRequests);
                                         for (int i = 0; i < json.length(); i++) {
@@ -175,7 +162,8 @@ public class Login extends AppCompatActivity {
                                             UserSettings.sentRequests.add(e.getString("user")+ " - " + e.getString("fullname"));
                                         }
                                     } catch (JSONException E) {
-                                        E.printStackTrace();
+                                        Toast.makeText(getApplicationContext(),
+                                        E.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
@@ -189,7 +177,8 @@ public class Login extends AppCompatActivity {
 
                             }
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(),
+                                        e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -219,10 +208,5 @@ public class Login extends AppCompatActivity {
             return false;
         }
         return true;
-    }
-    public static String removeLastChar(String s) {
-        return (s == null || s.length() == 0)
-                ? null
-                : (s.substring(0, s.length() - 1));
     }
 }

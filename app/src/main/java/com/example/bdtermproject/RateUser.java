@@ -40,6 +40,7 @@ public class RateUser extends Fragment {
 
     EditText ratingText;
     int starValue;
+    final String SEND_REVIEW_URL =  "https://coolendpointthatworks.com/carpool/sendReview";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -168,7 +169,7 @@ public class RateUser extends Fragment {
                     e.printStackTrace();
                 }
                 JsonObjectRequest jsArrayRequest = new JsonObjectRequest
-                        (Request.Method.POST, "http://136.32.51.159/carpool/sendReview.php", request, new Response.Listener<JSONObject>() {
+                        (Request.Method.POST, SEND_REVIEW_URL, request, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject e) {
 

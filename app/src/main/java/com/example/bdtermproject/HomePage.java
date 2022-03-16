@@ -39,7 +39,15 @@ import java.util.ArrayList;
 public class HomePage extends FragmentActivity {
 
     public static Context context;
-    String dataUrl = "http://136.32.51.159/carpool/activeOffering.php";
+
+    final String API_ENDPOINT = "https://coolendpointthatworks.com/carpool";
+    final String OFFERING_URL = API_ENDPOINT + "/activeOffering";
+    final String LOOKING_URL = API_ENDPOINT + "/activeLooking";
+    final String LOGIN_URL = API_ENDPOINT + "/login";
+
+
+    String dataUrl = OFFERING_URL;
+
     ArrayAdapter<String> adapter;
     ListView listView;
     static ArrayList<String> userData = new ArrayList<>();
@@ -86,10 +94,6 @@ public class HomePage extends FragmentActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(getApplicationContext(), Login.class);
-                ActivityCompat.finishAffinity(HomePage.this);
-                startActivity(intent);*/
-
                 PackageManager packageManager = context.getPackageManager();
                 Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
                 ComponentName componentName = intent.getComponent();
@@ -131,7 +135,7 @@ public class HomePage extends FragmentActivity {
             e.printStackTrace();
         }
         JsonObjectRequest jsArrayRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://136.32.51.159/carpool/login.php", request, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, LOGIN_URL, request, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         pDialog.dismiss();
@@ -155,12 +159,9 @@ public class HomePage extends FragmentActivity {
                                 String userSentRequests = response.getString("requestSent");
                                 Login.loggedInUserFullName = response.getString("FullName");
 
-                                if (userRequests.contains("user")) {
-                                    if (userRequests.endsWith(",")) {
-                                        userRequests = Login.removeLastChar(userRequests);
-                                        userRequests += "]";
-                                    }
 
+                                boolean success = true;
+                                if (userRequests.contains("user")) {
                                     try {
                                         JSONArray json = new JSONArray(userRequests);
                                         for (int i = 0; i < json.length(); i++) {
@@ -168,16 +169,11 @@ public class HomePage extends FragmentActivity {
                                             UserSettings.requests.add(e.getString("user")+ " - " + e.getString("fullname"));
                                         }
                                     } catch (JSONException E) {
-                                        E.printStackTrace();
+                                        success = false;
                                     }
                                 }
 
-                                if (userMatches.contains("user")) {
-                                    if (userMatches.endsWith(",")) {
-                                        userMatches = Login.removeLastChar(userMatches);
-                                        userMatches += "]";
-                                    }
-
+                                if (success && userMatches.contains("user")) {
                                     try {
                                         JSONArray json = new JSONArray(userMatches);
                                         for (int i = 0; i < json.length(); i++) {
@@ -185,16 +181,11 @@ public class HomePage extends FragmentActivity {
                                             UserSettings.matches.add(e.getString("user")+ " - " + e.getString("fullname"));
                                         }
                                     } catch (JSONException E) {
-                                        E.printStackTrace();
+                                        success = false;
                                     }
                                 }
 
-                                if (userSentRequests.contains("user")) {
-                                    if (userSentRequests.endsWith(",")) {
-                                        userSentRequests = Login.removeLastChar(userSentRequests);
-                                        userSentRequests += "]";
-                                    }
-
+                                if (success && userSentRequests.contains("user")) {
                                     try {
                                         JSONArray json = new JSONArray(userSentRequests);
                                         for (int i = 0; i < json.length(); i++) {
@@ -202,17 +193,20 @@ public class HomePage extends FragmentActivity {
                                             UserSettings.sentRequests.add(e.getString("user")+ " - " + e.getString("fullname"));
                                         }
                                     } catch (JSONException E) {
-                                        E.printStackTrace();
+                                        success = false;
                                     }
                                 }
 
                             }else{
-                                Toast.makeText(getApplicationContext(),
-                                        "Error refreshing!", Toast.LENGTH_SHORT).show();
-
+                                success = false;
                             }
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            success = false;
+                        }
+
+                        if (!success) {
+                            Toast.makeText(getApplicationContext(),
+                                        "Error fetching users list. Please try again soon.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -222,7 +216,7 @@ public class HomePage extends FragmentActivity {
                         pDialog.dismiss();
 
                         Toast.makeText(getApplicationContext(),
-                                "Error refreshing!", Toast.LENGTH_SHORT).show();
+                                        "Error fetching users list. Please try again soon.", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -237,9 +231,9 @@ public class HomePage extends FragmentActivity {
         listView = findViewById(R.id.users_list_view);
 
         if (UserSettings.userRideOption.toLowerCase().equals("looking"))
-            dataUrl = "http://136.32.51.159/carpool/activeOffering.php";
+            dataUrl = LOOKING_URL;
         if (UserSettings.userRideOption.toLowerCase().equals("offering"))
-            dataUrl = "http://136.32.51.159/carpool/activeLooking.php";
+            dataUrl = OFFERING_URL;
 
         userData.clear();
         userDestination.clear();
@@ -296,8 +290,8 @@ public class HomePage extends FragmentActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
-
+                Toast.makeText(getApplicationContext(),
+                                        "Error updating users list. Please try again soon.", Toast.LENGTH_SHORT).show();
             }
         });
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());

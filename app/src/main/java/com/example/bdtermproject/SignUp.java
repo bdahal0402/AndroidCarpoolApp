@@ -70,8 +70,7 @@ public class SignUp extends AppCompatActivity {
     private String destLongitude;
 
 
-
-    private String register_url = "http://136.32.51.159/carpool/register.php";
+    final String register_url =  "https://coolendpointthatworks.com/carpool/register";
 
     PlacesClient placesClient;
     @Override
